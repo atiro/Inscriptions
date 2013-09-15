@@ -194,6 +194,7 @@ with open('projects-epidoc.csv', 'rb') as csvfile:
 	text_nodes = None
 	text_node = None
 	translation_node = None
+	commentary_node = None
 
 	file = open(xml_file, 'r')
 	raw_data = unicode(file.read(), 'utf-8')
@@ -221,7 +222,10 @@ with open('projects-epidoc.csv', 'rb') as csvfile:
 	  else:
 	    description_node = root.findall(proj_inscrip, namespaces={'xmlns':'http://www.tei-c.org/ns/1.0'})[0]
 
-	  description = unicode(etree.tostring(description_node, encoding="UTF-8", method="text"), 'utf-8')
+	  if description_node is not None:
+		description = unicode(etree.tostring(description_node, encoding="UTF-8", method="text"), 'utf-8')
+	  else:
+	  	description = ''
 
 	  #print description
 
@@ -279,15 +283,22 @@ with open('projects-epidoc.csv', 'rb') as csvfile:
 
 	try:
 	  if(root.tag == "TEI.2"):
-	    translation_node = root.findall("./text/body/div[@type='translation']/p")[0]
-	    if len(translation_node) > 0:
-	  	translation_node = unicode(etree.tostring(translation_node, encoding="UTF-8", method="text"), 'utf-8')
+	    translation_nodes = root.findall("./text/body/div[@type='translation']")
+	    if len(translation_nodes) > 0:
+		if translation_nodes[0].find("./head") is not None:
+			head = translation_nodes[0].find("./head")
+			translation_nodes[0].remove(head)
+	  	translation_node = unicode(etree.tostring(translation_nodes[0], encoding="UTF-8", method="text"), 'utf-8')
 	    else:
 	    	translation_node = None
 	  else:
-	    translation_node = root.findall("./xmlns:text/xmlns:body/xmlns:div[@type='translation']/ab", namespaces={'xmlns':'http://www.tei-c.org/ns/1.0'})[0]
-	    if len(translation_node) > 0: 
-	  	translation_node = unicode(etree.tostring(translation_node, encoding="UTF-8", method="text"), 'utf-8')
+	    translation_nodes = root.findall("./xmlns:text/xmlns:body/xmlns:div[@type='translation']", namespaces={'xmlns':'http://www.tei-c.org/ns/1.0'})
+	    if len(translation_nodes) > 0: 
+	    	# Remove head node if exists (text nodes vary)
+		if translation_nodes[0].find("./xmlns:head", namespaces={'xmlns':'http://www.tei-c.org/ns/1.0'}) is not None:
+			head = translation_nodes[0].find("./xmlns:head", namespaces={'xmlns':'http://www.tei-c.org/ns/1.0'})
+			translation_nodes[0].remove(head)
+	  	translation_node = unicode(etree.tostring(translation_nodes[0], encoding="UTF-8", method="text"), 'utf-8')
 	    else:
 	    	translation_node = None
 	except:
@@ -315,6 +326,28 @@ with open('projects-epidoc.csv', 'rb') as csvfile:
 	    else:
 	    	bib_node = None
 
+	# Commentary
+
+	try:
+	  if(root.tag == "TEI.2"):
+	    commentary_node = root.findall("./text/body/div[@type='commentary']/p")[0]
+	    if len(commentary_node) > 0:
+	  	commentary_node = unicode(etree.tostring(commentary_node, encoding="UTF-8", method="text"), 'utf-8')
+	    else:
+	    	commentary_node = None
+	  else:
+	    commentary_nodes = root.findall("./xmlns:text/xmlns:body/xmlns:div[@type='commetnary']", namespaces={'xmlns':'http://www.tei-c.org/ns/1.0'})
+	    if len(commentary_nodes) > 0: 
+	    	# Remove head node if exists (text nodes vary)
+		if commentary_nodes[0].find("./xmlns:head", namespaces={'xmlns':'http://www.tei-c.org/ns/1.0'}) is not None:
+			head = commentary_nodes[0].find("./xmlns:head", namespaces={'xmlns':'http://www.tei-c.org/ns/1.0'})
+			commentary_nodes[0].remove(head)
+	  	commentary_node = unicode(etree.tostring(commetnary_nodes[0], encoding="UTF-8", method="text"), 'utf-8')
+	    else:
+	    	commentary_node = None
+	except:
+	  pass
+
 	if title != None:
 	  #print "Inserting into db"
 	  cur.execute('INSERT INTO inscription (title, description, location, lat, long) VALUES (?, ?, ?, ?, ?);', (title, description, u'', 0.0, 0.0))
@@ -333,6 +366,10 @@ with open('projects-epidoc.csv', 'rb') as csvfile:
 	  if bib_node is not None:
 	    	print "Added bibliographic node"
 		cur.execute('INSERT INTO inscription_text (inscription_id, type, content) VALUES (?, ?, ?)', (inscription_id, Inscription.BIBLIOGRAPHY, bib_node))
+
+	  if commentary_node is not None:
+	    	print "Added commentary node"
+		cur.execute('INSERT INTO inscription_text (inscription_id, type, content) VALUES (?, ?, ?)', (inscription_id, Inscription.COMMENTARY , commentary_node))
 
 	  con.commit()
 

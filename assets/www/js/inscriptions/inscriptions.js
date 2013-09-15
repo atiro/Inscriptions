@@ -227,7 +227,14 @@ function showProjectUI(tx, results) {
 
 
 	s += '<div class="project-info-map">';
-	s += '<input type="checkbox" name="mapslider" id="mapslider" class="toggle"><label for="mapslider" data-on="Ancient" data-off="Modern"><span></span></label>';
+	// TODO - Ideally slider button would autosize to handle more than
+	// on/off text but currently not happening (reported to Forum)
+	// s += '<input type="checkbox" name="mapslider" id="mapslider" class="toggle"><label for="mapslider" data-on="Ancient" data-off="Modern"><span></span></label>';
+	// More basic version for the moment.
+	s += '<form id="map-type">';
+	s += '<input type="radio" name="mapperiod" value="Ancient" id="Ancient" class="af-ui-forms"><label for="Ancient">Ancient</label>';
+	s += '<input type="radio" name="mapperiod" value="Modern" id="Modern" class="af-ui-forms"> <label for="Modern">Modern</label>';
+	s += '</form>';
 	s += '</div>';
 
 	// Info Table
@@ -243,7 +250,7 @@ function showProjectUI(tx, results) {
 
 	s += '<b>Project Status: </b> ';
 	if(proj_complete) {
-		s += 'Complete<br/>';
+		s += 'Completed<br/>';
 	} else {
 		s += 'In Progress<br/>';
 	}
@@ -366,7 +373,7 @@ function showInscriptionUI(tx, results) {
 				var i_content = res.rows.item(i).content;
 				if(i_type == 0) {
 				  s_text += '<div class="inscription-info">';
-				  s_text += '<h3>Text</h3><br/>'
+				  s_text += '<h3>Text</h3>'
 				  s_text += '<span>' + i_content + '</span>';
 				  s_text += '</div>';
 				} else if (i_type == 1) {
@@ -390,7 +397,6 @@ function showInscriptionUI(tx, results) {
 				}
 
 			}
-			s += '<br/>';
 		});
 	});
 			
@@ -453,13 +459,13 @@ function showInscriptionUI(tx, results) {
 
 	// Future Functionality
 
-	s += '<div id="inscription-buttons';
+	s += '<div id="inscription-buttons">';
 	s += '<form id="inscription-functions">';
 	s += '<input class="af-ui-forms" type="button" value="Ask a Question">\n';
 	s += '<br/><br/>';
 	s += '<input class="af-ui-forms" type="button" value="Discuss this Inscription">\n';
 	s += '</form>';
-	s += '</div>'
+	s += '</div>';
 
 	s += '</div>'; // col1-3
 	s += '</div>'; //grid
