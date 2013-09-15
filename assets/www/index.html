@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<!--HTML5 doctype-->
+<html>
+    <head>
+        <meta http-equiv="Content-type" content="text/html; charset=utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <META HTTP-EQUIV="Pragma" CONTENT="no-cache">
+
+        <script src="js/iaf2/appframework.min.js"></script>
+        <script src="js/iaf2/appframework.ui.min.js"></script>
+        <script src="js/iaf2/plugins/af.slidemenu.js"></script>
+        <script src="js/iaf2/plugins/af.css3animate.js"></script>
+        <script src="js/iaf2/plugins/af.scroller.js"></script>
+        <script src="js/OpenLayers.mobile.js"></script>
+        <script src="cordova-2.6.0.js"></script>
+        <script src="SQLitePlugin.js"></script>
+        <script src="js/photoswipe/klass.min.js"></script>
+        <script src="js/photoswipe/code.photoswipe-3.0.5.min.js"></script>
+        <script src="js/inscriptions/inscriptions.js"></script>
+
+        <script>
+						var map, layer;
+
+            $(document).ready(function(){
+                if($.ui.useOSThemes&&!$.os.ios&&$("#afui").get(0).className!=="ios")
+                $("#afui").removeClass("ios");
+
+            });
+
+						function map_init(lat, lon) {
+							map = new OpenLayers.Map('project-map');
+							layer = new OpenLayers.Layer.OSM("Simple Map");
+							map.addLayer(layer);
+							map.setCenter(
+								 new OpenLayers.LonLat(lon, lat).transform(
+								 new OpenLayers.Projection("EPSG:4326"),
+								 map.getProjectionObject()
+							   ), 12
+							);    
+						}
+        </script>
+        <link href="css/icons.css" rel="stylesheet" type="text/css"></link>
+        <link href="css/af.ui.css" rel="stylesheet" type="text/css"></link>
+        <link href="css/inscriptions.css" rel="stylesheet" type="text/css"></link>
+    </head>
+<body>
+  <div id="afui" class='android light'>
+          
+ <div id="header">
+</div>
+          
+ <div id="content">
+
+	<div selected="true" id="panel_home" class="panel" title="Inscriptions from the Ancient World (beta)" data-nav="nav_0" style="overflow: hidden;" data-load="listProjectsSQL">
+  </div> <!-- panel -->
+
+	<div id="project" title="Project" style="overflow: hidden;" class="panel" data-load="showProjectSQL">
+	</div>
+
+	<div id="project-wip" title="Project" style="overflow: hidden;" class="panel" data-load="showProjectWIPSQL">
+	</div>
+
+	<div id="inscriptions" title="Inscriptions" class="panel" data-load="browseInscriptionsSQL" js-scrolling="true">
+	</div>
+
+	<div id="inscription" title="Inscription" class="panel" data-load="showInscriptionSQL" data-unload="removeInscription">
+	</div>
+
+	<div id="photo" title="Photo" class="panel" data-load="showPhotoSQL">
+	</div>
+
+	</div> <!-- projects panel -->
+
+</div> <!-- content -->
+
+</div> <!-- afui -->
+
+</body>
+
+</html>

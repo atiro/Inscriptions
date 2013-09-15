@@ -1,0 +1,318 @@
+.project {
+				z-index: 1;
+}
+
+.project-roman {
+				width: 100%;
+				height: 100%;
+				background-color: #eb8c7e;
+				border-radius: 15px;
+				margin: 5px;
+				padding: 5px;
+}
+.project-roman h3 {
+				text-align: center;
+}
+
+.project-greek {
+				width: 100%;
+				height: 100%;
+				background-color: #9da7ec;
+				border-radius: 15px;
+				margin: 5px;
+				padding: 5px;
+}
+
+.project-greek h3 {
+				text-align: center;
+}
+
+.project-other {
+				width: 100%;
+				height: 100%;
+				background-color: #9df17e;
+				border-radius: 15px;
+				margin: 5px;
+				padding: 5px;
+}
+
+.project-other h3 {
+				text-align: center;
+}
+
+.project-live {
+				width: 95%;
+				height: 100%;
+				background-color: #9df17e;
+				border-radius: 15px;
+				margin: 5px;
+				padding: 5px;
+				box-shadow: 3px 3px 2px #888888;
+}
+
+.project-live h3 {
+				text-align: center;
+}
+.project-live h3 a {
+				text-decoration: none;
+}
+
+.project-wip {
+				width: 95%;
+				height: 100%;
+				background-color: #ccddee;
+				border-radius: 15px;
+				margin: 5px;
+				padding: 5px;
+				box-shadow: 1px 1px 1px #888888;
+}
+
+.project-wip h3 {
+				text-align: center;
+}
+
+.project-wip h3 a {
+				text-decoration: none;
+}
+
+.col1front {
+				width: 100%;
+				height: 33%;
+				background-color: #9da7ec;
+				border-radius: 15px;
+				margin: 5px;
+				padding: 5px;
+				z-index: 2;
+}
+
+.col1fronthide {
+				-webkit-transform: rotateX(90deg);
+				-moz-transform: rotateX(90deg);
+				transform: rotateX(90deg);
+				-webkit-transition: 1.5s;
+				transition: 1.5s;
+				-webkit-backface-visibility: hidden;
+				-moz-backface-visibility:    hidden;
+				-ms-backface-visibility:     hidden;
+}
+
+.col1back {
+				width: 100%;
+				height: 200px;
+				background-color: #9da7ec;
+				border-radius: 15px;
+				margin: 5px;
+				padding: 5px;
+				position: relative;
+				top: -200px;
+				z-index: 1;
+				-webkit-transform: rotateY(180deg);
+				-moz-transform: rotateY(180deg);
+				transform: rotateY(180deg);
+				-webkit-backface-visibility: hidden;
+				-moz-backface-visibility:    hidden;
+				-ms-backface-visibility:     hidden;
+}
+
+.col1backshow {
+				-webkit-transform: rotateY(180deg);
+				-moz-transform: rotateY(180deg);
+				transform: rotateY(180deg);
+				-webkit-transition: 1.5s;
+				transition: 1.5s;
+				-webkit-backface-visibility: visible;
+				-moz-backface-visibility:    visible;
+				-ms-backface-visibility:     visible;
+
+}
+
+.project2 {
+				width: 100%;
+				height: 33%;
+				background-color: #9df17e;
+				border-radius: 15px;
+				margin: 5px;
+				padding: 5px;
+}
+
+.project3 {
+				width: 100%;
+				height: 33%;
+				background-color: #eb8c7e;
+				border-radius: 15px;
+				margin: 5px;
+				padding: 5px;
+}
+
+.project3-hidden {
+				width: 100%;
+				height: 200px;
+				background-color: #eb8c7e;
+				border-radius: 15px;
+				margin: 5px;
+				padding: 5px;
+				visibility: hidden;
+}
+
+
+.projcol {
+				padding: 5px;
+				width: 100%;
+				height: 100%;
+				position: relative;
+				perspective: 800px;
+}
+
+/*
+@media handheld, only screen and (min-width: 768px) {
+.project-info {
+				height: 66%;
+			  width: 100%;
+}
+
+.project-info-bg {
+				width: 66%;
+				float: left;
+}
+
+.project-info-map {
+				width: 34%;
+				height: 33%;
+				float: right;
+}
+
+.project-info-table {
+				width: 34%;
+				height: 33%;
+				float: right;
+}
+
+.project-highlights {
+				width: 100%;
+				height: 34%;
+}
+}
+
+*/
+
+.project-map {
+				width: 100%;
+				height: 200px;
+}
+
+.project-info-table {
+				line-height: 150%;
+}
+
+.highlight_img {
+				border: 1px solid black;
+				width: 20%;
+				text-align: center;
+				float: left;
+}
+
+.highlight_img a {
+				text-decoration: none;
+}
+
+.highlight_img img {
+					width: 100%;
+					height: 150px;
+}
+
+.highlight_noimg {
+				border: 1px solid black;
+				width: 25%;
+				height: 75px;
+				float: left;
+				text-align: center;
+				text-decoration: none;
+}
+
+.highlight_noimg a {
+				text-decoration: none;
+}
+
+@media only screen and (max-device-width: 768px) {
+.project-highlights {
+				visibility: hidden;
+}
+
+.project-info-map {
+				visibility: hidden;
+}
+
+}
+
+.proj-search-box {
+				width: 50%;
+}
+
+#browse_inscriptions {
+				font-size: 175%;
+				text-align: center;
+}
+
+.inscription {
+				width: 20%;
+				height: 75px;
+				float: left;
+				text-align: center;
+				text-decoration: none;
+}
+
+.inscription-info span {
+				margin-top: 10px;
+				margin-left: 20px;
+}
+
+.block0 {
+				background-color: #D6D6F5;
+}
+
+.block1 {
+				background-color: #A5A5E9;
+}
+
+.block2 {
+				background-color: #F5D6D6;
+}
+
+.block3 {
+				background-color: #DDDD73;
+}
+
+.block4 {
+				background-color: #E6F5D6;
+}
+
+.photoblock {
+				margin-left: 10px;
+}
+
+.col1-3 h3 {
+				text-align: center;
+}
+
+.photo {
+				float: left;
+				margin-right: 5px;
+}
+
+.fullphoto {
+					text-align: center;
+}
+
+#inscription-buttons {
+			clear: left;
+			margin-top: 20px;
+}
+
+.project-info-browse {
+				width: 100%;
+				text-align: center;
+}
+
+.col3 h3 {
+				text-align: center;
+}

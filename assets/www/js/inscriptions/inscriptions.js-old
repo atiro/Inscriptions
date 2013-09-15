@@ -1,0 +1,211 @@
+var db;
+
+var inscriptions_navbar = ['Description', 'Text', 'Images', 'Links']
+
+document.addEventListener("deviceready", onDeviceReady, false);
+
+$.ui.autoLaunch=true;
+$.ui.resetScollers=false;
+$.ui.useOSThemes=true;
+
+$.ui.blockPageScroll();
+
+function onDeviceReady() {
+    	console.log("Opening database");
+ 	db = window.sqlitePlugin.openDatabase("inscriptions", "1.0", "inscriptions", 222222);
+
+    	$.ui.launch();	// https://www.html5dev-software.intel.com/viewtopic.php?f=26&t=3636
+
+	// AppMobi.device.setRotateOrientation("portrait");
+        // AppMobi.device.setAutoRotate(false);
+	webRoot=AppMobi.webRoot+"/";
+	//hide splash screen
+	AppMobi.device.hideSplashScreen(); 
+
+}
+
+$(document).on('loadpanel', '#browseall', listProjects);
+
+function listProjects() {
+    console.log("Retrieving project list");
+    db.transaction(function (tx) {
+        tx.executeSql("select id,name,count(ip.project_id) as num_inscriptions from project as p LEFT JOIN inscription_project as ip ON p.id = ip.project_id group by p.id order by name", [], showProjects, dbErrorHandler);
+    }, dbErrorHandler);
+}
+
+
+function showProjects(tx, results) {
+    if (results.rows.length == 0) {
+        <!-- ?? -->
+    } else {
+        var s = "";
+        for (var i = 0; i < results.rows.length; i++) {
+            var id = results.rows.item(i).id;
+            var name = results.rows.item(i).name;
+            var num_inscriptions = results.rows.item(i).num_inscriptions;
+
+            if (num_inscriptions > 0) {
+                s += '<li><a href="#project-' + id + '" id="' + id + '">' + name + '<span class="inscription_count">' + num_inscriptions + '</span></a></li>';
+            } else {
+                s += '<li><a href="#project-' + id + '" id="' + id + '">' + name + '</a></li>';
+            }
+
+        }
+
+        $("#projects_list").empty().append(s);
+
+        console.log("ShowProjects");
+
+        $("#projects_list li").on('click', function () {
+            localStorage.project = $('a', this).attr('id');
+            console.log("project id: " + localStorage.project);
+            $.ui.loadContent('#project_inscriptions', false, false, "pop");
+        });
+    }
+}
+
+
+function listProjectsByCountry() {
+    console.log("Retrieving project list");
+    db.transaction(function (tx) {
+        tx.executeSql("select id,name from country order by name", [], showProjectsByCountry, dbErrorHandler);
+    }, dbErrorHandler);
+}
+
+function showProjectsByCountry(tx, results) {
+    if (results.rows.length == 0) {
+        <!-- ?? -->
+    } else {
+        var s = "";
+        for (var i = 0; i < results.rows.length; i++) {
+            var id = results.rows.item(i).id;
+            var name = results.rows.item(i).name;
+
+            s += '<li data-role="list-divider">' + name + '</li>';
+
+        }
+
+        $("#country_list").clear().append(s);
+
+        console.log("ShowProjects");
+
+
+        $("#project_list li").on('click', function () {
+            localStorage.project = $('a', this).attr('id');
+            console.log("project id: " + localStorage.project);
+            $.mobile.changePage('project_inscriptions.html', {
+                transition: "pop"
+            });
+        });
+
+    }
+}
+$(document).on('loadpanel', '#project_inscriptions', listProjectInscriptions);
+
+function listProjectInscriptions() {
+    console.log("Retrieving project inscriptions");
+    db.transaction(function (tx) {
+        var project_id = localStorage.project;
+        if (project_id != localStorage.currentProjectId) {
+            localStorage.currentProjectId = project_id;
+
+            tx.executeSql("select id,title from inscription WHERE id IN (SELECT inscription_id FROM inscription_project as ip WHERE ip.project_id = " + project_id + " LIMIT 100)", [], showProjectInscriptions, dbErrorHandler);
+        }
+    }, dbErrorHandler);
+}
+
+function showProjectInscriptions(tx, results) {
+    if (results.rows.length == 0) {
+        <!-- ?? -->
+    } else {
+        var s = "";
+        for (var i = 0; i < results.rows.length; i++) {
+            var id = results.rows.item(i).id;
+            var title = results.rows.item(i).title;
+
+            s += '<li id="' + id + '"><a href="#proj-inscrip-' + id + '" id="' + id + '">' + results.rows.item(i).title + '</a></li>';
+
+        }
+        $("#project_inscriptions_list").empty().append(s);
+
+        $("#project_inscriptions_list li").on('click', function () {
+            localStorage.inscription = $('a', this).attr('id');
+            console.log("inscription id: " + localStorage.inscription);
+            $.ui.loadContent('#project_inscription', false, false, "pop");
+        });
+
+	// Change Navbar
+
+	updateNavBar('#project_navbar');
+
+    }
+}
+
+function retrieveProjectInscription() {
+    db.transaction(function (txt) {
+        var inscription_id = localStorage.inscription;
+        txt.executeSql("select title,description,location from inscription where id = " + inscription_id, [], showProjectInscription, dbErrorHandler);
+    }, dbErrorHandler);
+}
+
+function showProjectInscription(tx, results) {
+    var title = results.rows.item(0).title;
+    var desc = results.rows.item(0).description;
+
+    $("#inscription_content").empty().append("<p><b>Title:</b> " + title + "</p><p><b>Description:</b> " + desc + "</p>")
+
+    // Change Navbar
+
+    updateNavBar('#inscription_navbar');
+}
+
+$(document).on('loadpanel', '#project_inscription', retrieveProjectInscription);
+$(document).on('unloadpanel', '#project_inscription', restoreNavBar);
+
+$(document).on('loadpanel', '#inscription_photos', retrieveInscriptionPhotos);
+
+function retrieveInscriptionPhotos() {
+	
+	// Open XML file
+    db.transaction(function (txt) {
+        var inscription_id = localStorage.inscription;
+        txt.executeSql("select photo_url,title from inscription_photo_thumb where inscription_id = " + inscription_id, [], showInscriptionPhotos, dbErrorHandler);
+    }, dbErrorHandler);
+}
+
+function showInscriptionPhotos(tx, results) {
+    if (results.rows.length == 0) {
+        <!-- ?? -->
+    } else {
+        var s = "";
+        for (var i = 0; i < results.rows.length; i++) {
+            var id = results.rows.item(i).id;
+            var title = results.rows.item(i).title;
+            var url = results.rows.item(i).photo_url;
+
+            s += '<img src="' + url + '"/><br/>';
+
+        }
+
+        $("#inscription_photos_carousel").empty().html(s);
+
+    }
+//        $("#project_inscriptions_list li").on('click', function () {
+ //           localStorage.inscription = $('a', this).attr('id');
+
+}
+
+// Helper Functions
+
+// From http://stackoverflow.com/questions/12468825/jqmobi-dynamically-adding-items-to-footer
+function updateNavBar(navbar) {
+    $.ui.updateNavbarElements($(navbar));
+}
+
+function restoreNavBar() {
+   $.ui.updateNavbarElements(localStorage.navbar);
+}
+
+function dbErrorHandler(err) {
+    console.log("DB Error: " + err.message + "\nCode=" + err.code);
+}
