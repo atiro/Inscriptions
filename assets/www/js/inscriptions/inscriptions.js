@@ -13,6 +13,9 @@ function myClickHandler(evt){
     evt.preventDefault();
 }
      
+function swipeBack() {
+	$.ui.goBack();
+}
 
 var init = function () {
 	window.setTimeout(function () {
@@ -37,6 +40,12 @@ var onDeviceReady = function () {
 //	AppMobi.device.hideSplashScreen(); 
 
 	$.ui.customClickHandler=myClickHandler;
+
+	$('#project').bind("swipeRight", swipeBack);
+	$('#project-wip').bind("swipeRight", swipeBack);
+	$('#inscriptions').bind("swipeRight", swipeBack);
+	$('#inscription').bind("swipeRight", swipeBack);
+	$('#photo').bind("swipeRight", swipeBack);
 
     	console.log("Opening database");
  	db = window.sqlitePlugin.openDatabase("inscriptions", "1.0", "inscriptions", 222222);
@@ -226,16 +235,17 @@ function showProjectUI(tx, results) {
 	*/
 
 
-	s += '<div class="project-info-map">';
+	// s += '<div class="project-info-map">';
 	// TODO - Ideally slider button would autosize to handle more than
 	// on/off text but currently not happening (reported to Forum)
 	// s += '<input type="checkbox" name="mapslider" id="mapslider" class="toggle"><label for="mapslider" data-on="Ancient" data-off="Modern"><span></span></label>';
-	// More basic version for the moment.
-	s += '<form id="map-type">';
-	s += '<input type="radio" name="mapperiod" value="Ancient" id="Ancient" class="af-ui-forms"><label for="Ancient">Ancient</label>';
-	s += '<input type="radio" name="mapperiod" value="Modern" id="Modern" class="af-ui-forms"> <label for="Modern">Modern</label>';
-	s += '</form>';
-	s += '</div>';
+	// More basic version for the moment. Removed, doesn't work well
+	// s += '<form id="map-type">';
+	// s += '<input type="radio" name="mapperiod" value="Ancient" id="Ancient" class="af-ui-forms"><label for="Ancient">Ancient</label>';
+	// s += '<input type="radio" name="mapperiod" value="Modern" id="Modern" class="af-ui-forms"> <label for="Modern">Modern</label>';
+	// s += '</form>';
+
+	// s += '</div>';
 
 	// Info Table
 
@@ -276,7 +286,8 @@ function showProjectUI(tx, results) {
 
 		s += '<div class="project-info-browse">';
 		s += '<form id="proj-browse">';
-		s += '<input class="af-ui-forms" id="browse_inscriptions" type="button" value="Browse Inscriptions" onclick="$(\'#inscriptions\').data(\'proj_id\', \'' + proj_id + '\'); $.ui.loadContent(\'#inscriptions\', false, false, \'slide\');">\n';
+		s += '<input class="af-ui-forms" id="browse_inscriptions" type="button" value="Browse All Inscriptions" onclick="$(\'#inscriptions\').data(\'proj_id\', \'' + proj_id + '\'); $.ui.loadContent(\'#inscriptions\', false, false, \'slide\');">\n';
+		s += '<input class="af-ui-forms" id="view_saved" type="button" value="View Saved" onclick="$(\'#inscriptions\').data(\'proj_id\', \'' + proj_id + '\'); $.ui.loadContent(\'#saved\', false, false, \'slide\');">\n';
 		s += '</form></div>';
 	}
 
@@ -374,22 +385,22 @@ function showInscriptionUI(tx, results) {
 				var i_content = res.rows.item(i).content;
 				if(i_type == 0) {
 				  s_text += '<div class="inscription-info">';
-				  s_text += '<h3>Text</h3>'
+				  s_text += '<h3>Text</h3><br/>';
 				  s_text += '<span>' + i_content + '</span>';
 				  s_text += '</div>';
 				} else if (i_type == 1) {
 				  s_trans += '<div class="inscription-info">';
-				  s_trans += '<h3>Translation</h3><br/>'
+				  s_trans += '<h3>Translation</h3><br/>';
 				  s_trans += '<span>' + i_content + '</span>';
 				  s_trans += '</div>';
 				} else if (i_type == 2) {
 				  s_comm += '<div class="inscription-info">';
-				  s_comm += '<h3>Commentary</h3><br/>'
+				  s_comm += '<h3>Commentary</h3><br/>';
 				  s_comm += '<span>' + i_content + '</span>';
 				  s_comm += '</div>';
 				} else if (i_type == 3) {
 				  s_biblio += '<div class="inscription-info">';
-				  s_biblio += '<h3>Bibliography</h3><br/>'
+				  s_biblio += '<h3>Bibliography</h3><br/>';
 				  s_biblio += '<span>' + i_content + '</span>';
 				  s_biblio += '</div>';
 				} else {
