@@ -97,6 +97,10 @@ try:
 	cur.execute("CREATE TABLE inscription_project(project_id INT, inscription_id INT)")
 	cur.execute("CREATE TABLE inscription_country(country_id INT, inscription_id INT)")
 	cur.execute("CREATE TABLE inscription_photo(id INTEGER PRIMARY KEY, inscription_id INT, thumb_url TEXT, full_url TEXT, title TEXT)")
+
+	# Basic Favourite table
+	cur.execute("CREATE TABLE inscription_favourite(id INTEGER PRIMARY KEY, inscription_id INT, notes TEXT)")
+
 	#cur.execute("CREATE TABLE inscription_photo_full(inscription_id INT, photo_url TEXT, title TEXT)")
 
 except sqlite3.Error as e:
@@ -215,23 +219,35 @@ with open('projects-epidoc.csv', 'rb') as csvfile:
 	#print title
 	
 	try:
-	  description_node = None
+	  desc_nodes = None
+	  desc_node = None
 	
 	  if(root.tag == "TEI.2"):
-	    description_node = root.findall(proj_inscrip)[0]
+	    desc_nodes = root.findall(proj_inscrip)[0]
+	    if len(desc_nodes) > 0:
+		if desc_nodes.find("./head") is not None:
+			head = desc_nodes.find("./head")
+			desc_nodes.remove(head)
+		description = unicode(etree.tostring(desc_nodes, encoding="UTF-8", method="text"), 'utf-8')
+	    else:
+	  	description = ''
 	  else:
-	    description_node = root.findall(proj_inscrip, namespaces={'xmlns':'http://www.tei-c.org/ns/1.0'})[0]
+	    desc_nodes = root.findall(proj_inscrip, namespaces={'xmlns':'http://www.tei-c.org/ns/1.0'})[0]
 
-	  if description_node is not None:
-		description = unicode(etree.tostring(description_node, encoding="UTF-8", method="text"), 'utf-8')
-	  else:
+	    if len(desc_nodes) > 0:
+		if desc_nodes.find("./xmlns:head", namespaces={'xmlns':'http://www.tei-c.org/ns/1.0'}) is not None:
+			head = desc_nodes.find("./xmlns:head", namespaces={'xmlns':'http://www.tei-c.org/ns/1.0'})
+			desc_nodes.remove(head)
+		description = unicode(etree.tostring(desc_nodes, encoding="UTF-8", method="text"), 'utf-8')
+	    else:
 	  	description = ''
 
-	  #print description
+#	  print 'Description:', description
 
-	except:
+	except Exception,e:
+		print "Description exception: ", e
 	  	# Log error/notice (may be valid empty file)
-	  pass
+#	  pass
 
 	# Text
 
@@ -330,8 +346,11 @@ with open('projects-epidoc.csv', 'rb') as csvfile:
 
 	try:
 	  if(root.tag == "TEI.2"):
-	    commentary_node = root.findall("./text/body/div[@type='commentary']/p")[0]
+	    commentary_node = root.findall("./text/body/div[@type='commentary']")[0]
 	    if len(commentary_node) > 0:
+                if commentary_node.find("./head") is not None:
+                  head = commentary_node.find("./head")
+                  commentary_node.remove(head)
 	  	commentary_node = unicode(etree.tostring(commentary_node, encoding="UTF-8", method="text"), 'utf-8')
 	    else:
 	    	commentary_node = None

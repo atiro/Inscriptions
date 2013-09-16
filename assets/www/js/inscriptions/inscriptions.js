@@ -254,7 +254,8 @@ function showProjectUI(tx, results) {
 	} else {
 		s += 'In Progress<br/>';
 	}
-	s += '<b>Project Dates: </b> ' + proj_start + '-' + proj_end + '<br/>';
+	// TODO - Only show if valid
+	//s += '<b>Project Dates: </b> ' + proj_start + '-' + proj_end + '<br/>';
 
 	db.transaction(function(tx) {
 		tx.executeSql("select i.name from institution as i, project_institution as p where p.institution_id = i.id and p.project_id = " + proj_id, [], function(tx, res) {
@@ -405,7 +406,12 @@ function showInscriptionUI(tx, results) {
 	}
 
 	if(s_trans != '') {
-		s += s_trans + '<br/>';
+	  s += s_trans + '<br/>';
+	} else {
+	  s_trans += '<div class="inscription-info">';
+	  s_trans += '<h3>Translation</h3><br/>'
+	  s += '<span>No translation at present</span>' + '<br/>';
+	  s_trans += '</div>';
 	}
 
 	if(s_comm != '') {
@@ -414,7 +420,7 @@ function showInscriptionUI(tx, results) {
 
 	if(i_desc != '') {
 	  s += '<div class="inscription-info">';
- 	  s += '<h3>Material Description</h3><br/>'
+ 	  s += '<h3>Description (Material)</h3><br/>'
           s += '<span>' + i_desc + '</span>';
 	  s += '</div>';
 	  s += '<br/>';
@@ -461,7 +467,7 @@ function showInscriptionUI(tx, results) {
 
 	s += '<div id="inscription-buttons">';
 	s += '<form id="inscription-functions">';
-	s += '<input class="af-ui-forms" type="button" value="Ask a Question">\n';
+//	s += '<input class="af-ui-forms" type="button" value="Ask a Question">\n';
 	s += '<br/><br/>';
 	s += '<input class="af-ui-forms" type="button" value="Discuss this Inscription">\n';
 	s += '</form>';

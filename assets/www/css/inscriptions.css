@@ -213,6 +213,7 @@
 				text-align: center;
 }
 
+
 .highlight_img {
 				border: 1px solid black;
 				width: 20%;
@@ -273,6 +274,14 @@
 .inscription-info span {
 				margin-top: 10px;
 				margin-left: 20px;
+			  clear: left;
+}
+
+#inscription-buttons {
+			clear: left;
+			margin-top: 20px;
+			text-align: center;
+			bottom: 0px;
 }
 
 .block0 {
@@ -312,11 +321,6 @@
 					text-align: center;
 }
 
-#inscription-buttons {
-			clear: left;
-			margin-top: 20px;
-			bottom: 0px;
-}
 
 
 .col3 h3 {
