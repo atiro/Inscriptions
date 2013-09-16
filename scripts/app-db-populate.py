@@ -98,8 +98,8 @@ try:
 	cur.execute("CREATE TABLE inscription_country(country_id INT, inscription_id INT)")
 	cur.execute("CREATE TABLE inscription_photo(id INTEGER PRIMARY KEY, inscription_id INT, thumb_url TEXT, full_url TEXT, title TEXT)")
 
-	# Basic Favourite table
-	cur.execute("CREATE TABLE inscription_favourite(id INTEGER PRIMARY KEY, inscription_id INT, notes TEXT)")
+	# Basic Saved Items table
+	cur.execute("CREATE TABLE saved_inscription(id INTEGER PRIMARY KEY, inscription_id INT, date INT, notes TEXT)")
 
 	#cur.execute("CREATE TABLE inscription_photo_full(inscription_id INT, photo_url TEXT, title TEXT)")
 

@@ -6,6 +6,7 @@ var inscriptions_navbar = ['Description', 'Text', 'Images', 'Links']
 $.ui.autoLaunch=true;
 $.ui.resetScollers=true;
 $.ui.useOSThemes=true;
+$.feat.nativeTouchScroll=false;
 
 $.ui.blockPageScroll();
 
@@ -46,6 +47,7 @@ var onDeviceReady = function () {
 	$('#inscriptions').bind("swipeRight", swipeBack);
 	$('#inscription').bind("swipeRight", swipeBack);
 	$('#photo').bind("swipeRight", swipeBack);
+	$('#saved').bind("swipeRight", swipeBack);
 
     	console.log("Opening database");
  	db = window.sqlitePlugin.openDatabase("inscriptions", "1.0", "inscriptions", 222222);
@@ -286,7 +288,7 @@ function showProjectUI(tx, results) {
 
 		s += '<div class="project-info-browse">';
 		s += '<form id="proj-browse">';
-		s += '<input class="af-ui-forms" id="browse_inscriptions" type="button" value="Browse All Inscriptions" onclick="$(\'#inscriptions\').data(\'proj_id\', \'' + proj_id + '\'); $.ui.loadContent(\'#inscriptions\', false, false, \'slide\');">\n';
+		s += '<input class="af-ui-forms" id="browse_inscriptions" type="button" value="Browse All Inscriptions" onclick="$(\'#inscriptions\').data(\'proj_id\', \'' + proj_id + '\'); $.ui.loadContent(\'#inscriptions\', false, false, \'slide\');"><br/>\n';
 		s += '<input class="af-ui-forms" id="view_saved" type="button" value="View Saved" onclick="$(\'#inscriptions\').data(\'proj_id\', \'' + proj_id + '\'); $.ui.loadContent(\'#saved\', false, false, \'slide\');">\n';
 		s += '</form></div>';
 	}
@@ -385,7 +387,7 @@ function showInscriptionUI(tx, results) {
 				var i_content = res.rows.item(i).content;
 				if(i_type == 0) {
 				  s_text += '<div class="inscription-info">';
-				  s_text += '<h3>Text</h3><br/>';
+				  s_text += '<h3>Text</h3>';
 				  s_text += '<span>' + i_content + '</span>';
 				  s_text += '</div>';
 				} else if (i_type == 1) {
@@ -413,16 +415,23 @@ function showInscriptionUI(tx, results) {
 	});
 			
 	if(s_text != '') {
-		s += s_text; + '<br/>';
+		s += s_text + '<br/>';
+	} else {
+	  s_text = '<div class="inscription-info">';
+	  s_text += '<h3>Text</h3><br/>'
+	  s_text += '<span>No readable text</span>' + '<br/>';
+	  s_text += '</div>';
+	  s += s_text + '<br/>';
 	}
 
 	if(s_trans != '') {
 	  s += s_trans + '<br/>';
 	} else {
-	  s_trans += '<div class="inscription-info">';
+	  s_trans = '<div class="inscription-info">';
 	  s_trans += '<h3>Translation</h3><br/>'
-	  s += '<span>No translation at present</span>' + '<br/>';
+	  s_trans += '<span>No translation at present</span>' + '<br/>';
 	  s_trans += '</div>';
+	  s += s_trans + '<br/>';
 	}
 
 	if(s_comm != '') {
@@ -528,6 +537,10 @@ function showPhotoUI(tx, results) {
 
     $.ui.updatePanel('#photo', s);
 
+}
+
+function showSavedSQL(tx, results) {
+    console.log("showSavedSQL");
 }
 
 // Helper Functions

@@ -259,7 +259,12 @@
 }
 
 #browse_inscriptions {
-				font-size: 175%;
+				font-size: 150%;
+				text-align: center;
+}
+
+#browse_inscriptions {
+				font-size: 150%;
 				text-align: center;
 }
 
@@ -267,6 +272,9 @@
 				width: 20%;
 				height: 75px;
 				float: left;
+}
+
+.inscription a {
 				text-align: center;
 				text-decoration: none;
 }
