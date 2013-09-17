@@ -68,7 +68,7 @@ function listProjectsSQL() {
     	return;
     } else {
     db.transaction(function (tx) {
-        tx.executeSql("select id,name,complete,count(ip.project_id) as num_inscriptions from project as p LEFT JOIN inscription_project as ip ON p.id = ip.project_id group by p.id order by RANDOM()", [], listProjectsUI, dbErrorHandler);
+        tx.executeSql("select id,name,complete,count(ip.project_id) as num_inscriptions from project as p LEFT JOIN inscription as i ON p.id = i.project_id group by p.id order by RANDOM()", [], listProjectsUI, dbErrorHandler);
     }, dbErrorHandler);
     }
 }
@@ -169,7 +169,7 @@ function showProjectUI(tx, results) {
 
 	if(proj_thumb) {
 	  db.transaction(function(tx) {
-		tx.executeSql("select id,title from inscription WHERE id IN (SELECT inscription_id FROM inscription_project as ip WHERE ip.project_id = " + proj_id + " ORDER BY RANDOM() LIMIT 5)",  [], function(tx, res) {
+		tx.executeSql("select id,title from inscription WHERE project_id = " + proj_id + " ORDER BY RANDOM() LIMIT 5)",  [], function(tx, res) {
 		        for (var i = 0; i < res.rows.length; i++) {
 				var i_id = res.rows.item(i).id;
 				var i_title = res.rows.item(i).title;
@@ -197,7 +197,7 @@ function showProjectUI(tx, results) {
 	});
 	} else {
 	  db.transaction(function(tx) {
-		tx.executeSql("select id,title from inscription WHERE id IN (SELECT inscription_id FROM inscription_project as ip WHERE ip.project_id = " + proj_id + " ORDER BY RANDOM() LIMIT 12)",  [], function(tx, res) {
+		tx.executeSql("select id,title from inscription WHERE project_id = " + proj_id + " ORDER BY RANDOM() LIMIT 12)",  [], function(tx, res) {
 		        for (var i = 0; i < res.rows.length; i++) {
 				var i_id = res.rows.item(i).id;
 				var i_title = res.rows.item(i).title;
@@ -288,7 +288,7 @@ function showProjectUI(tx, results) {
 
 		s += '<div class="project-info-browse">';
 		s += '<form id="proj-browse">';
-		s += '<input class="af-ui-forms" id="browse_inscriptions" type="button" value="Browse All Inscriptions" onclick="$(\'#inscriptions\').data(\'proj_id\', \'' + proj_id + '\'); $.ui.loadContent(\'#inscriptions\', false, false, \'slide\');"><br/>\n';
+		s += '<input class="af-ui-forms" id="browse_inscriptions" type="button" value="Browse All Inscriptions" onclick="$(\'#inscriptions\').data(\'proj_id\', \'' + proj_id + '\'); $.ui.loadContent(\'#inscriptions\', false, false, \'slide\');"><br/><br/>\n';
 		s += '<input class="af-ui-forms" id="view_saved" type="button" value="View Saved" onclick="$(\'#inscriptions\').data(\'proj_id\', \'' + proj_id + '\'); $.ui.loadContent(\'#saved\', false, false, \'slide\');">\n';
 		s += '</form></div>';
 	}
@@ -322,7 +322,7 @@ function browseInscriptionsSQL(inscriptions_div) {
     if(db) {
       console.log("browseInscriptionsSQL");
       db.transaction(function (tx) {
-            tx.executeSql("select id,title from inscription WHERE id IN (SELECT inscription_id FROM inscription_project as ip WHERE ip.project_id = " + proj_id + " LIMIT 100)", [], browseInscriptionsUI, dbErrorHandler);
+            tx.executeSql("select id,title from inscription WHERE project_id = " + proj_id + " LIMIT 50)", [], browseInscriptionsUI, dbErrorHandler);
         });
     }
 }
@@ -387,7 +387,7 @@ function showInscriptionUI(tx, results) {
 				var i_content = res.rows.item(i).content;
 				if(i_type == 0) {
 				  s_text += '<div class="inscription-info">';
-				  s_text += '<h3>Text</h3>';
+				  s_text += '<h3>Text</h3><br/>';
 				  s_text += '<span>' + i_content + '</span>';
 				  s_text += '</div>';
 				} else if (i_type == 1) {
@@ -489,7 +489,8 @@ function showInscriptionUI(tx, results) {
 	s += '<form id="inscription-functions">';
 //	s += '<input class="af-ui-forms" type="button" value="Ask a Question">\n';
 	s += '<br/><br/>';
-	s += '<input class="af-ui-forms" type="button" value="Discuss Inscription"><br/><br/>\n';
+	// TODO - website ?
+	// s += '<input class="af-ui-forms" type="button" value="Discuss Inscription"><br/><br/>\n';
 	s += '<input class="af-ui-forms" type="button" value="Save Inscription">\n';
 	s += '</form>';
 	s += '</div>';
@@ -542,6 +543,28 @@ function showPhotoUI(tx, results) {
 
 function showSavedSQL(tx, results) {
     console.log("showSavedSQL");
+    var proj_id = $(inscriptions_div).data("proj_id");
+    if(db) {
+      console.log("showSavedSQL");
+      db.transaction(function (tx) {
+            tx.executeSql("select id,title from inscription WHERE project_id = " + proj_id + " AND id IN (SELECT inscription_id FROM saved_inscription) LIMIT 100", [], showSavedUI, dbErrorHandler);
+        });
+}
+
+function showSavedUI(tx, results) {
+
+	if(results.rows.length > 0) {
+	   s += '<div>';
+	   s += 'Many saved inscriptions';
+	   s += '</div>';
+   	   $.ui.updatePanel('#saved', s);
+	} else {
+	   s += '<div>';
+	   s += 'No saved inscriptions';
+	   s += '</div>';
+ 	   $.ui.updatePanel('#saved', s);
+	}
+
 }
 
 // Helper Functions

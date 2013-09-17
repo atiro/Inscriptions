@@ -263,7 +263,7 @@
 				text-align: center;
 }
 
-#browse_inscriptions {
+#view_saved {
 				font-size: 150%;
 				text-align: center;
 }
@@ -280,8 +280,8 @@
 }
 
 .inscription-info span {
-				margin-top: 10px;
-				margin-left: 20px;
+				padding-top: 10px;
+				padding-left: 20px;
 			  clear: left;
 }
 

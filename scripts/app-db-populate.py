@@ -89,12 +89,13 @@ try:
 	# Need to handle having local copy in epidoc to display, or having
 	# to request via webservice/website (TODO)
 
-	cur.execute("CREATE TABLE inscription(id INTEGER PRIMARY KEY , title TEXT, description TEXT, location TEXT, lat FLOAT, long FLOAT)")
+	cur.execute("CREATE TABLE inscription(id INTEGER PRIMARY KEY , project_id INT, title TEXT, description TEXT, location TEXT, lat FLOAT, long FLOAT)")
 	cur.execute("CREATE TABLE inscription_text(inscription_id INT, type INT, content TEXT)")
 	cur.execute("CREATE TABLE inscription_lang(lang_id INT, inscription_id INT)") 
 	cur.execute("CREATE TABLE inscription_period(period_id INT, inscription_id INT)")
 	cur.execute("CREATE TABLE inscription_name(name_id INT, inscription_id INT)")
-	cur.execute("CREATE TABLE inscription_project(project_id INT, inscription_id INT)")
+	# Moved project_id to inscription as no benefit to seperate table
+	# cur.execute("CREATE TABLE inscription_project(project_id INT, inscription_id INT)")
 	cur.execute("CREATE TABLE inscription_country(country_id INT, inscription_id INT)")
 	cur.execute("CREATE TABLE inscription_photo(id INTEGER PRIMARY KEY, inscription_id INT, thumb_url TEXT, full_url TEXT, title TEXT)")
 
