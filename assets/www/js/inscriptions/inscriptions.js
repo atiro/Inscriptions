@@ -489,7 +489,8 @@ function showInscriptionUI(tx, results) {
 	s += '<form id="inscription-functions">';
 //	s += '<input class="af-ui-forms" type="button" value="Ask a Question">\n';
 	s += '<br/><br/>';
-	s += '<input class="af-ui-forms" type="button" value="Discuss this Inscription">\n';
+	s += '<input class="af-ui-forms" type="button" value="Discuss Inscription"><br/><br/>\n';
+	s += '<input class="af-ui-forms" type="button" value="Save Inscription">\n';
 	s += '</form>';
 	s += '</div>';
 
