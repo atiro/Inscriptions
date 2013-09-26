@@ -71,6 +71,18 @@ def unescape(text):
 con = None
 
 try:
+	# Create notebook DB
+	con = sqlite3.connect('notebook.db')
+	cur = con.cursor()
+	# Basic Saved Items table
+	cur.execute("CREATE TABLE marked(id INTEGER PRIMARY KEY, inscription_id INT, date INT, comment TEXT)")
+	cur.execute("CREATE TABLE note(id INTEGER PRIMARY KEY, inscription_id INT, date INT, note TEXT)")
+	con.commit()
+except sqlite3.Error as e:
+	print "DB Error: " + e.args[0]
+	con.close()
+
+try:
 	con = sqlite3.connect('inscriptions.db')
 
 	cur = con.cursor()
@@ -89,7 +101,7 @@ try:
 	# Need to handle having local copy in epidoc to display, or having
 	# to request via webservice/website (TODO)
 
-	cur.execute("CREATE TABLE inscription(id INTEGER PRIMARY KEY , project_id INT, title TEXT, description TEXT, location TEXT, lat FLOAT, long FLOAT)")
+	cur.execute("CREATE TABLE inscription(id INTEGER PRIMARY KEY, project_id INT, title TEXT, description TEXT, location TEXT, lat FLOAT, long FLOAT)")
 	cur.execute("CREATE TABLE inscription_text(inscription_id INT, type INT, content TEXT)")
 	cur.execute("CREATE TABLE inscription_lang(lang_id INT, inscription_id INT)") 
 	cur.execute("CREATE TABLE inscription_period(period_id INT, inscription_id INT)")
@@ -99,8 +111,6 @@ try:
 	cur.execute("CREATE TABLE inscription_country(country_id INT, inscription_id INT)")
 	cur.execute("CREATE TABLE inscription_photo(id INTEGER PRIMARY KEY, inscription_id INT, thumb_url TEXT, full_url TEXT, title TEXT)")
 
-	# Basic Saved Items table
-	cur.execute("CREATE TABLE saved_inscription(id INTEGER PRIMARY KEY, inscription_id INT, date INT, notes TEXT)")
 
 	#cur.execute("CREATE TABLE inscription_photo_full(inscription_id INT, photo_url TEXT, title TEXT)")
 
@@ -370,9 +380,9 @@ with open('projects-epidoc.csv', 'rb') as csvfile:
 
 	if title != None:
 	  #print "Inserting into db"
-	  cur.execute('INSERT INTO inscription (title, description, location, lat, long) VALUES (?, ?, ?, ?, ?);', (title, description, u'', 0.0, 0.0))
+	  cur.execute('INSERT INTO inscription (title, project_id, description, location, lat, long) VALUES (?, ?, ?, ?, ?, ?);', (title, proj_id, description, u'', 0.0, 0.0))
 	  inscription_id = cur.lastrowid
-	  cur.execute('INSERT INTO inscription_project (project_id, inscription_id) VALUES (?, ?)', (proj_id, inscription_id))
+	  # cur.execute('INSERT INTO inscription_project (project_id, inscription_id) VALUES (?, ?)', (proj_id, inscription_id))
 	  cur.execute('INSERT INTO inscription_country (inscription_id, country_id) VALUES (?, ?)', (proj_id, country_id))
 
 	  if translation_node is not None:

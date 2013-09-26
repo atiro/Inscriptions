@@ -274,6 +274,12 @@
 				float: left;
 }
 
+.inscription div {
+				width: 20%;
+				height: 75px;
+				float: left;
+}
+
 .inscription a {
 				text-align: center;
 				text-decoration: none;
@@ -323,6 +329,10 @@
 .photo {
 				float: left;
 				margin-right: 5px;
+}
+
+.photo span {
+				text-align: center;
 }
 
 .fullphoto {

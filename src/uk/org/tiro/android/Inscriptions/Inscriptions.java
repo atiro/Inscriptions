@@ -30,7 +30,7 @@ public class Inscriptions extends DroidGap
     {
         try {
                 File dbFile = getDatabasePath("inscriptions.db");
-                /* RELEASE - ensure copy only done first run 
+                /* RELEASE - ensure copy only done first run or on upgrade(?)
                 if(!dbFile.exists()) {
                 */
                 this.copy("inscriptions.db", dbFile.getAbsolutePath());
