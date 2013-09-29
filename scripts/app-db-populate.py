@@ -75,8 +75,7 @@ try:
 	con = sqlite3.connect('notebook.db')
 	cur = con.cursor()
 	# Basic Saved Items table
-	cur.execute("CREATE TABLE marked(id INTEGER PRIMARY KEY, inscription_id INT, date INT, comment TEXT)")
-	cur.execute("CREATE TABLE note(id INTEGER PRIMARY KEY, inscription_id INT, date INT, note TEXT)")
+	cur.execute("CREATE TABLE note(id INTEGER PRIMARY KEY, project_id INT, inscription_id INT, title TEXT, date INT, note TEXT)")
 	con.commit()
 except sqlite3.Error as e:
 	print "DB Error: " + e.args[0]
@@ -91,7 +90,8 @@ try:
 
 
 	cur.execute("CREATE TABLE country(id INTEGER PRIMARY KEY , name TEXT, ancient BOOLEAN, modern BOOLEAN)")	# plieades link ?
-	cur.execute("CREATE TABLE project(id INTEGER PRIMARY KEY, name TEXT, abbr TEXT, description TEXT, url TEXT, start_date TEXT, end_date TEXT, thumb_url TEXT, full_url TEXT, country INTEGER, long FLOAT, lat FLOAT , live BOOLEAN, complete BOOLEAN, new BOOLEAN, updated BOOLEAN)")
+	# guid - FUTURE global project id schema (to be developed)
+	cur.execute("CREATE TABLE project(id INTEGER PRIMARY KEY, guid TEXT, name TEXT, abbr TEXT, description TEXT, url TEXT, start_date TEXT, end_date TEXT, thumb_url TEXT, full_url TEXT, country INTEGER, long FLOAT, lat FLOAT , live BOOLEAN, complete BOOLEAN, new BOOLEAN, updated BOOLEAN)")
 	cur.execute("CREATE TABLE period(id INTEGER PRIMARY KEY , name TEXT)")
 	cur.execute("CREATE TABLE language(id INTEGER PRIMARY KEY , name TEXT)")
 	cur.execute("CREATE TABLE name(id INTEGER PRIMARY KEY , name TEXT, type TEXT)")
@@ -101,7 +101,8 @@ try:
 	# Need to handle having local copy in epidoc to display, or having
 	# to request via webservice/website (TODO)
 
-	cur.execute("CREATE TABLE inscription(id INTEGER PRIMARY KEY, project_id INT, title TEXT, description TEXT, location TEXT, lat FLOAT, long FLOAT)")
+	# guid - FUTURE global inscription id schema (to be developed)
+	cur.execute("CREATE TABLE inscription(id INTEGER PRIMARY KEY, project_id INT, guid TEXT, title TEXT, description TEXT, location TEXT, lat FLOAT, long FLOAT)")
 	cur.execute("CREATE TABLE inscription_text(inscription_id INT, type INT, content TEXT)")
 	cur.execute("CREATE TABLE inscription_lang(lang_id INT, inscription_id INT)") 
 	cur.execute("CREATE TABLE inscription_period(period_id INT, inscription_id INT)")

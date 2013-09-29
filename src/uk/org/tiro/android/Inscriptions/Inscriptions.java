@@ -28,19 +28,25 @@ public class Inscriptions extends DroidGap
     @Override
     public void onCreate(Bundle savedInstanceState)
     {
+    /*
         try {
                 File dbFile = getDatabasePath("inscriptions.db");
-                /* RELEASE - ensure copy only done first run or on upgrade(?)
+                File notesFile = getDatabasePath("notebook.db");
+                 RELEASE - ensure copy only done first run or on upgrade(?)
                 if(!dbFile.exists()) {
-                */
+                
                 this.copy("inscriptions.db", dbFile.getAbsolutePath());
-                /* RELEASE
+                 RELEASE
                 }
-                */
+                
+                if(!notesFile.exists()) {
+                  this.copy("notebook.db", notesFile.getAbsolutePath());
+                 }
         }
         catch (Exception e) {
                 e.printStackTrace();
         }
+	*/
 
         super.onCreate(savedInstanceState);
         // Set by <content src="index.html" /> in config.xml

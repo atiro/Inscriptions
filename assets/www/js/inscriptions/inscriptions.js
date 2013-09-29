@@ -51,6 +51,7 @@ var onDeviceReady = function () {
 
     	console.log("Opening database");
  	db = window.sqlitePlugin.openDatabase("inscriptions", "1.0", "inscriptions", 222222);
+ 	notesdb = window.sqlitePlugin.openDatabase("notebook", "1.0", "notebook", 222222);
 };
 	
 document.addEventListener("deviceready", onDeviceReady, false);
@@ -358,7 +359,7 @@ function showInscriptionSQL(inscription_div) {
     console.log("Inscription Id: " + inscription_id);
     if(db) {
       db.transaction(function (tx) {
-            tx.executeSql("select id,title,description,location from inscription where id = " + inscription_id, [], showInscriptionUI, dbErrorHandler);
+            tx.executeSql("select id,project_id, title,description,location from inscription where id = " + inscription_id, [], showInscriptionUI, dbErrorHandler);
         });
     }
 }
@@ -369,6 +370,7 @@ function showInscriptionUI(tx, results) {
         <!-- ?? -->
     } else {
     	var i_id = results.rows.item(0).id;
+    	var i_projid = results.rows.item(0).project_id;
     	var i_title = results.rows.item(0).title;
     	var i_desc = results.rows.item(0).description;
     	var i_loc = results.rows.item(0).location;
@@ -491,7 +493,7 @@ function showInscriptionUI(tx, results) {
 	s += '<br/><br/>';
 	// TODO - website ?
 	// s += '<input class="af-ui-forms" type="button" value="Discuss Inscription"><br/><br/>\n';
-	s += '<input class="af-ui-forms" type="button" value="Save Inscription" id="save_button" onClick="saveInscription(' + i_id + '); return false;">\n';
+	s += '<input class="af-ui-forms" type="button" value="Save Inscription" id="save_button" onClick="saveInscription(' + i_projid + ',' + i_id + ',\'' + i_title.replace(/\n/gm, '') + '\'); return false;">\n';
 	s += '</form>';
 	s += '</div>';
 
@@ -559,8 +561,8 @@ function showSavedSQL(tx, results) {
     var proj_id = $('#saved').data("proj_id");
     if(db) {
       console.log("showSavedSQL");
-      db.transaction(function (tx) {
-            tx.executeSql("select id,title from inscription WHERE project_id = " + proj_id + " AND id IN (SELECT inscription_id FROM saved_inscription) LIMIT 100", [], showSavedUI, dbErrorHandler);
+      notesdb.transaction(function (tx) {
+            tx.executeSql("select id,inscription_id,title from note WHERE project_id = " + proj_id + " LIMIT 100", [], showSavedUI, dbErrorHandler);
         });
     }
 }
@@ -594,11 +596,11 @@ function showSavedUI(tx, results) {
 
 // Helper Functions
 
-function saveInscription(id) {
+function saveInscription(proj_id, inscrip_id, title) {
     if(db) {
       console.log("saveInscription");
-      db.transaction(function (tx) {
-        tx.executeSql("INSERT INTO saved_inscription(inscription_id) VALUES(" + id + ")");
+      notesdb.transaction(function (tx) {
+        tx.executeSql("INSERT INTO note(project_id, inscription_id, title) VALUES(" + proj_id + "," + inscrip_id + ",'" + title + "')");
       });
    }
 }
