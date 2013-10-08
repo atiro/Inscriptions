@@ -17,7 +17,7 @@
        under the License.
  */
 
-package uk.org.tiro.android.InscriptionsDB;
+package uk.org.tiro.android.Inscriptions;
 
 import android.content.Context;
 import android.database.Cursor;
@@ -28,7 +28,7 @@ import com.readystatesoftware.sqliteasset.SQLiteAssetHelper;
 
 public class InscriptionsDB extends SQLiteAssetHelper {
 
-    private static final String DATABASE_NAME = "inscriptions";
+    private static final String DATABASE_NAME = "inscriptions.db";
     private static final int DATABASE_VERSION = 1;
 
     public InscriptionsDB(Context context) {

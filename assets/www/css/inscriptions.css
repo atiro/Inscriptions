@@ -75,6 +75,33 @@
 				text-decoration: none;
 }
 
+.plugbar {
+				position: absolute;
+				bottom: 0;
+}
+
+.researchplug {
+				width: 20%;
+				height: 35px;
+				float: left;
+				text-align: center;
+				text-decoration: none;
+}
+
+/*
+.researchplug div {
+				width: 20%;
+				height: 25px;
+				float: left;
+				text-align: center;
+}
+*/
+
+.researchplug div a {
+				text-decoration: none;
+				text-align: center;
+}
+
 .col1front {
 				width: 100%;
 				height: 33%;
@@ -296,6 +323,18 @@
 			margin-top: 20px;
 			text-align: center;
 			bottom: 0px;
+}
+
+#prevpage {
+			float: left;
+			width: 10em;
+			height: 2em;
+}
+
+#nextpage {
+			float: right;
+			width: 10em;
+			height: 2em;
 }
 
 .block0 {

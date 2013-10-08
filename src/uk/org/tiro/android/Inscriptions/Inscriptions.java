@@ -25,6 +25,9 @@ import org.apache.cordova.*;
 
 public class Inscriptions extends DroidGap
 {
+    private InscriptionsDB inscripdb;
+    private NotebookDB notebookdb;
+
     @Override
     public void onCreate(Bundle savedInstanceState)
     {
@@ -47,6 +50,12 @@ public class Inscriptions extends DroidGap
                 e.printStackTrace();
         }
 	*/
+
+	inscripdb = new InscriptionsDB(this);
+	inscripdb.getReadableDatabase();
+
+	notebookdb = new NotebookDB(this);
+	notebookdb.getReadableDatabase();
 
         super.onCreate(savedInstanceState);
         // Set by <content src="index.html" /> in config.xml

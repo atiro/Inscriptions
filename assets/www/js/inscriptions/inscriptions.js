@@ -119,8 +119,15 @@ function listProjectsUI(tx, results) {
 
 	// Research Project Banner Board
 
-	s += '<div id="navbar" class="research_board">';
-	s += 'Research projects banner board here';
+	s += '<div id="plugbar">';
+	s += '<br>Powered by:<br><br>';
+	s += '<div class="researchplug block0"><a href="http://epidoc.sf.net/"><h4>EpiDoc</h4></a></div>';
+	s += '<div class="researchplug block2"><a href="http://pleiades.stoa.org/"><h4>Pleiades</h4></a></div>';
+	s += '<div class="researchplug block3"><a href="http://pelagios-project.blogspot.co.uk/p/about-pelagios.html"><h4>Pelagios</h4></a></div>';
+	s += '<div class="researchplug block4"><a href="http://www.perseus.tufts.edu/hopper/"><h4>Perseus</h4></a></div>';
+	s += '<div class="researchplug block1"><a href="http://www.digitalclassicist.org/"><h4>Digital Classicist</h4></a></div>';
+
+	// Others
 	s += '</div>';
 
 	console.log("Updating Panel: " + s);
@@ -289,7 +296,7 @@ function showProjectUI(tx, results) {
 
 		s += '<div class="project-info-browse">';
 		s += '<form id="proj-browse">';
-		s += '<input class="af-ui-forms" id="browse_inscriptions" type="button" value="Browse All Inscriptions" onclick="$(\'#inscriptions\').data(\'proj_id\', \'' + proj_id + '\'); $.ui.loadContent(\'#inscriptions\', false, false, \'slide\');"><br/><br/>\n';
+		s += '<input class="af-ui-forms" id="browse_inscriptions" type="button" value="Browse All Inscriptions" onclick="$(\'#inscriptions\').data(\'proj_id\', \'' + proj_id + '\'); $(\'#inscriptions\').data(\'offset\', 0); $.ui.loadContent(\'#inscriptions\', false, false, \'slide\');"><br/><br/>\n';
 		s += '<input class="af-ui-forms" id="view_saved" type="button" value="View Saved" onclick="$(\'#saved\').data(\'proj_id\', \'' + proj_id + '\'); $.ui.loadContent(\'#saved\', false, false, \'slide\');">\n';
 		s += '</form></div>';
 	}
@@ -319,26 +326,31 @@ function showProjectUI(tx, results) {
 function browseInscriptionsSQL(inscriptions_div) {
     console.log("browseInscriptionsSQL");
     var proj_id = $(inscriptions_div).data("proj_id");
+    var offset = parseInt($(inscriptions_div).data("offset"));
+    if(offset == null) { offset = 0; }
     console.log("Proj Id: " + proj_id);
     if(db) {
       console.log("browseInscriptionsSQL");
       db.transaction(function (tx) {
-            tx.executeSql("select id,title from inscription WHERE project_id = " + proj_id + " LIMIT 50", [], browseInscriptionsUI, dbErrorHandler);
+            tx.executeSql("select id,title from inscription WHERE project_id = " + proj_id + " LIMIT " + offset + ",25", [], browseInscriptionsUI, dbErrorHandler);
         });
     }
 }
 
 function browseInscriptionsUI(tx, results) {
+    var s = "";
+    var proj_id = $('#inscriptions').data('proj_id');
+    var offset = parseInt($('#inscriptions').data("offset"));
+    if(offset == null) { offset = 0; }
+
     console.log("browseInscriptionsUI");
     if (results.rows.length == 0) {
         <!-- ?? -->
     } else {
-        var s = "";
 	s += '<div class="inscriptions" data-pull-scroller="true">';
         for (var i = 0; i < results.rows.length; i++) {
     	  var i_id = results.rows.item(i).id;
     	  var i_title = results.rows.item(i).title;
-	  var proj_id = $('inscriptions').data('proj_id');
 	  var block = Math.floor(Math.random() * 4);
 	  s += '<a href="" onClick="$(\'#inscription\').data(\'proj_id\', \'' + proj_id + '\'); $(\'#inscription\').data(\'inscription_id\', \'' + i_id + '\'); $.ui.loadContent(\'#inscription\', false, false, \'pop\'); return false;">';
 	  s += '<div class="inscription block' + block + '">';
@@ -347,14 +359,98 @@ function browseInscriptionsUI(tx, results) {
 	  s += '</a>';
 	}
     }
+
+
+    s += '</div>';
+    s += '<div id="paging">';
+    s += '<form id="inscrip-browse">';
+    if(offset > 0) {
+    	   var back_offset = offset - 25;
+ 	   s += '<input class="af-ui-forms" id="prevpage" type="button" value="Prev 25" onclick="$(\'#inscriptions\').data(\'proj_id\', \'' + proj_id + '\'); $(\'#inscriptions\').data(\'offset\', ' + back_offset + '); browseInscriptionPager(); return false;">\n';
+    }
+    offset += 25;
+    s += '<input class="af-ui-forms" id="nextpage" type="button" value="Next 25" onclick="$(\'#inscriptions\').data(\'proj_id\', \'' + proj_id + '\'); $(\'#inscriptions\').data(\'offset\', ' + offset + '); browseInscriptionsPager(); return false;">\n';
+
+    s += '</form>';
+    s += '</div>';
+
     //$('#project').attr('title', proj_name);
     $.ui.updatePanel('#inscriptions', s);
+
+   // $('#inscriptions').data('proj_id', proj_id);
+
+/*
+    var inscripscroller = $('#inscriptions').scroller(
+    		{'verticalScroll': true,
+		 'refresh': true,
+		 'scrollBars': true,
+		 'horizontalScroll': false,
+		 'vScrollCSS': "jqmScrollbar",
+		 'hScrollCSS': "jqmScrollbar"
+    });
+
+    $.bind(inscripscroller, "refresh-release", function() {
+    		console.log("Pulling to refresh");
+    });
+
+    inscripscroller.enable();
+*/
+}
+
+function browseInscriptionsPager() {
+    var proj_id = $('#inscriptions').data("proj_id");
+    var offset = parseInt($('#inscriptions').data("offset"));
+    var s = '';
+
+    if(offset == null) { offset = 0; }
+
+    console.log("browseInscriptionsPager");
+    console.log("offset: " + offset);
+    if(offset == null) { offset = 0; }
+    console.log("Proj Id: " + proj_id);
+    if(db) {
+      db.transaction(function (tx) {
+            tx.executeSql("select id,title from inscription WHERE project_id = " + proj_id + " LIMIT " + offset + ",25", [], function(tx, results) {
+	     s += '<div class="inscriptions" data-pull-scroller="true">';
+             for (var i = 0; i < results.rows.length; i++) {
+    	      var i_id = results.rows.item(i).id;
+    	      var i_title = results.rows.item(i).title;
+	      var block = Math.floor(Math.random() * 4);
+	      s += '<a href="" onClick="$(\'#inscription\').data(\'proj_id\', \'' + proj_id + '\'); $(\'#inscription\').data(\'inscription_id\', \'' + i_id + '\'); $.ui.loadContent(\'#inscription\', false, false, \'pop\'); return false;">';
+	      s += '<div class="inscription block' + block + '">';
+	      s += i_title;
+  	      s += '</div>';
+	      s += '</a>';
+	    }
+
+           s += '</div>';
+    s += '<div id="paging">';
+    s += '<form id="inscrip-browse">';
+    if(offset > 0) {
+    	   var back_offset = offset - 25;
+ 	   s += '<input class="af-ui-forms" id="prevpage" type="button" value="Prev 25" onclick="$(\'#inscriptions\').data(\'proj_id\', \'' + proj_id + '\'); $(\'#inscriptions\').data(\'offset\', ' + back_offset + '); browseInscriptionsPager(); return false;">\n';
+    }
+    offset += 25;
+    s += '<input class="af-ui-forms" id="nextpage" type="button" value="Next 25" onclick="$(\'#inscriptions\').data(\'proj_id\', \'' + proj_id + '\'); $(\'#inscriptions\').data(\'offset\', ' + offset + '); browseInscriptionsPager(); return false;">\n';
+
+    s += '</form>';
+    s += '</div>';
+
+    //$('#project').attr('title', proj_name);
+    $.ui.updatePanel('#inscriptions', s);
+
+	    
+    }, dbErrorHandler);
+        });
+    }
+
+	
 }
 
 function showInscriptionSQL(inscription_div) {
     console.log("showInscriptionSQL");
-    var proj_id = $(inscription_div).data("proj_id");
-    var inscription_id = $(inscription_div).data("inscription_id");
+    var proj_id = $('#inscription').data("proj_id");
+    var inscription_id = $('#inscription').data("inscription_id");
     console.log("Proj Id: " + proj_id);
     console.log("Inscription Id: " + inscription_id);
     if(db) {
@@ -575,7 +671,7 @@ function showSavedUI(tx, results) {
 	  var proj_id = $('saved').data('proj_id');
 	  s += '<div class="inscriptions" data-pull-scroller="true">';
           for (var i = 0; i < results.rows.length; i++) {
-    	    var i_id = results.rows.item(i).id;
+    	    var i_id = results.rows.item(i).inscription_id;
     	    var i_title = results.rows.item(i).title;
 	    var block = Math.floor(Math.random() * 4);
 	    s += '<a href="" onClick="$(\'#inscription\').data(\'proj_id\', \'' + proj_id + '\'); $(\'#inscription\').data(\'inscription_id\', \'' + i_id + '\'); $.ui.loadContent(\'#inscription\', false, false, \'pop\'); return false;">';
@@ -599,6 +695,8 @@ function showSavedUI(tx, results) {
 function saveInscription(proj_id, inscrip_id, title) {
     if(db) {
       console.log("saveInscription");
+      console.log("Proj Id: " + proj_id);
+      console.log("Inscription Id: " + inscrip_id);
       notesdb.transaction(function (tx) {
         tx.executeSql("INSERT INTO note(project_id, inscription_id, title) VALUES(" + proj_id + "," + inscrip_id + ",'" + title + "')");
       });
