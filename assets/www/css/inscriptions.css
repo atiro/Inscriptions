@@ -80,10 +80,15 @@
 				bottom: 0;
 }
 
-.researchplug {
-				width: 20%;
-				height: 35px;
+.iotd {
 				float: left;
+				margin: 10px;
+}
+
+.researchplug {
+				width: 33%;
+				height: 35px;
+				float: right;
 				text-align: center;
 				text-decoration: none;
 }
@@ -361,7 +366,11 @@
 				margin-left: 10px;
 }
 
-.col1-3 h3 {
+.col1-3 h4 {
+				text-align: center;
+}
+
+.col2-3 h3 {
 				text-align: center;
 }
 
@@ -381,5 +390,9 @@
 
 
 .col3 h3 {
+				text-align: center;
+}
+
+.col2 h3 {
 				text-align: center;
 }

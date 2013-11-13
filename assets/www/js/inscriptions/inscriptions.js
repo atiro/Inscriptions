@@ -69,7 +69,7 @@ function listProjectsSQL() {
     	return;
     } else {
     db.transaction(function (tx) {
-        tx.executeSql("select p.id,name,complete,count(i.project_id) as num_inscriptions from project as p LEFT JOIN inscription as i ON p.id = i.project_id group by p.id order by RANDOM()", [], listProjectsUI, dbErrorHandler);
+        tx.executeSql("select p.id,name,complete,count(i.project_id) as num_inscriptions from project as p LEFT JOIN inscription as i ON p.id = i.project_id group by p.id order by name", [], listProjectsUI, dbErrorHandler);
     }, dbErrorHandler);
     }
 }
@@ -117,17 +117,32 @@ function listProjectsUI(tx, results) {
 
 	console.log(s);
 
+	s += '<div class="grid">';
+	s += '<div class="col2-3">';
+	// Inscription of the Day
+
+	s += '<h3>Inscription of the Day</h3>';
+	s += randomInscription();
+
+	s += '</div>';
+	s += '<div class="col1-3">';
+
 	// Research Project Banner Board
 
 	s += '<div id="plugbar">';
-	s += '<br>Powered by:<br><br>';
+	s += '<h4>With thanks to:</h4><br>';
 	s += '<div class="researchplug block0"><a href="http://epidoc.sf.net/"><h4>EpiDoc</h4></a></div>';
 	s += '<div class="researchplug block2"><a href="http://pleiades.stoa.org/"><h4>Pleiades</h4></a></div>';
 	s += '<div class="researchplug block3"><a href="http://pelagios-project.blogspot.co.uk/p/about-pelagios.html"><h4>Pelagios</h4></a></div>';
-	s += '<div class="researchplug block4"><a href="http://www.perseus.tufts.edu/hopper/"><h4>Perseus</h4></a></div>';
+	s += '<div class="researchplug block4" style="clear: left;"><a href="http://www.perseus.tufts.edu/hopper/"><h4>Perseus</h4></a></div>';
 	s += '<div class="researchplug block1"><a href="http://www.digitalclassicist.org/"><h4>Digital Classicist</h4></a></div>';
+	s += '<div class="researchplug block2"><a href="http://www.stoa.org/"><h4>Stoa</h4></a></div>';
 
 	// Others
+	s += '</div>';
+
+	// End Grid
+	s += '</div>';
 	s += '</div>';
 
 	console.log("Updating Panel: " + s);
@@ -692,6 +707,42 @@ function showSavedUI(tx, results) {
 
 // Helper Functions
 
+function randomInscription() {
+	var s = "";
+	var inscrip_id;
+
+	if(db) {
+	  console.log("randomInscription");
+          db.transaction(function (tx) {
+            tx.executeSql("select ip.inscription_id,thumb_url from inscription_photo as ip where inscription_id in (SELECT inscription_id from inscription_text where type = 1) order by RANDOM() LIMIT 1" , [], function(tx, res) {
+				inscrip_id = res.rows.item(0).inscription_id;
+				var photo_url = res.rows.item(0).thumb_url;
+				s += '<a href="" onClick="$(\'#inscription\').data(\'inscription_id\', \'' + inscrip_id + '\'); $.ui.loadContent(\'#inscription\', false, false, \'pop\'); return false;">';
+
+                                s += '<img src="' + photo_url + '" class="iotd"/></a>';
+	    });
+          }, dbErrorHandler);
+
+          db.transaction(function (tx) {
+            tx.executeSql("select content from inscription_text where type = 1 AND inscription_id = " + inscrip_id , [], function(tx, res) {
+				var content = res.rows.item(0).content;
+				s += '<p><b>Translation:</b>';
+				if(content.length > 0) {
+					s += content.substr(0, 288);
+				} else {
+					s += 'No translation available';	
+				}
+				s += '<i>(cont)</i>';
+				s += '</p>';
+	    });
+          }, dbErrorHandler);
+
+	}
+
+	return s;
+}
+
+	  
 function saveInscription(proj_id, inscrip_id, title) {
     if(db) {
       console.log("saveInscription");
