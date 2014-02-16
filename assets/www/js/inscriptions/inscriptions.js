@@ -40,6 +40,12 @@ var onDeviceReady = function () {
 	//hide splash screen
 //	AppMobi.device.hideSplashScreen(); 
 
+	AppMobi.device.setRotateOrientation("landscape");
+	AppMobi.device.setAutoRotate(false);
+
+	// intel.xdk.device.setRotateOrientation("landscape");
+	// intel.xdk.device.setAutoRotate(false);
+
 	$.ui.customClickHandler=myClickHandler;
 
 	$('#project').bind("swipeRight", swipeBack);
