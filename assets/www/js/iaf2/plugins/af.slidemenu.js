@@ -4,7 +4,7 @@
  *
  */;
 (function($) {
-    var startX, startY, blocking = false,
+    var startX, startY, dx, dy, blocking = false,
         checking = false,
         doMenu = true,
         showHide = false;
@@ -18,8 +18,10 @@
         var elems = $("#content, #header, #navbar");
         var $menu = $("#menu");
         var max = $("#menu").width();
+        var slideOver = max/3;
         var menuState;
         var transTime = $.ui.transitionTime;
+        $.ui.toggleSideMenu(false, null, 0);
 
         window.addEventListener("resize", function(e) {
             max = $("#menu").width();
@@ -41,28 +43,24 @@
         });
         $("#afui").bind("touchmove", function(e) {
 
-            
+            if (!$.ui.isSideMenuEnabled()) return true;
             if (!$.ui.slideSideMenu||keepOpen) return true;
+            dx = e.touches[0].pageX;
+            dy = e.touches[0].pageY;
+            if (!menuState && dx < startX) return true;
+            if (menuState && dx > startX) return true;
+            if (dx-startX > max) return true;
+            if (startX-dx > max) return true;
+            if (Math.abs(dy - startY) > Math.abs(dx - startX)) return true;
+            
             if (!checking) {
                 checking = true;
                 doMenu=false;
                 return true;
-            }
-            else 
+            } else { 
                 doMenu=true;
-             if(!doMenu) return;
-
-            var dx = e.touches[0].pageX;
-            var dy = e.touches[0].pageY;
-            //if (!menuState && dx < startX) return;
-            //else if (menuState && dx > startX) return;
-            if (Math.abs(dy - startY) > Math.abs(dx - startX)) {
-                doMenu = false;
-                return true;
-            }            
-            console.log(dx,max);
-            if (dx > max) return true;
-            console.log(dy,startY,dx,startX);
+            }
+            
             showHide = dx - startX > 0 ? 2 : false;
             var thePlace = Math.abs(dx - startX);
 
@@ -76,6 +74,10 @@
             elems.cssTranslate(thePlace + "px,0");
             e.preventDefault();
             e.stopPropagation();
+            
+            if( Math.abs(dx-startX) < slideOver){
+                showHide = showHide ? false : 2;
+            }
 
         });
         $("#afui").bind("touchend", function(e) {

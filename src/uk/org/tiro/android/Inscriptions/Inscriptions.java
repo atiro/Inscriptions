@@ -23,6 +23,8 @@ import java.io.*;
 import android.os.Bundle;
 import org.apache.cordova.*;
 
+import android.util.Log;
+
 public class Inscriptions extends DroidGap
 {
     private InscriptionsDB inscripdb;
@@ -31,16 +33,17 @@ public class Inscriptions extends DroidGap
     @Override
     public void onCreate(Bundle savedInstanceState)
     {
-    /*
+   
         try {
                 File dbFile = getDatabasePath("inscriptions.db");
                 File notesFile = getDatabasePath("notebook.db");
-                 RELEASE - ensure copy only done first run or on upgrade(?)
-                if(!dbFile.exists()) {
+                 // RELEASE - ensure copy only done first run or on upgrade(?)
+                //if(!dbFile.exists()) {
                 
+		Log.v("Inscriptions", "Copying database file over: " + dbFile.getAbsolutePath() );
                 this.copy("inscriptions.db", dbFile.getAbsolutePath());
-                 RELEASE
-                }
+                 // RELEASE
+                //}
                 
                 if(!notesFile.exists()) {
                   this.copy("notebook.db", notesFile.getAbsolutePath());
@@ -49,7 +52,7 @@ public class Inscriptions extends DroidGap
         catch (Exception e) {
                 e.printStackTrace();
         }
-	*/
+	
 
 	inscripdb = new InscriptionsDB(this);
 	inscripdb.getReadableDatabase();

@@ -36,15 +36,19 @@ $.ui.ready(function () {
 var onDeviceReady = function () {
 	// AppMobi.device.setRotateOrientation("portrait");
         // AppMobi.device.setAutoRotate(false);
-	webRoot=AppMobi.webRoot+"/";
+
+	webRoot= intel.xdk.webRoot + "/";
+
 	//hide splash screen
 //	AppMobi.device.hideSplashScreen(); 
 
-	AppMobi.device.setRotateOrientation("landscape");
-	AppMobi.device.setAutoRotate(false);
+//	AppMobi.device.setRotateOrientation("landscape");
+//	AppMobi.device.setAutoRotate(false);
 
-	// intel.xdk.device.setRotateOrientation("landscape");
-	// intel.xdk.device.setAutoRotate(false);
+//	intel.xdk.device.setAutoRotate(false)
+
+//	intel.xdk.device.setRotateOrientation("landscape");
+//	intel.xdk.device.setAutoRotate(false);
 
 	$.ui.customClickHandler=myClickHandler;
 
@@ -61,6 +65,7 @@ var onDeviceReady = function () {
 };
 	
 document.addEventListener("deviceready", onDeviceReady, false);
+// document.addEventListener("index.xdk.device.ready", onDeviceReady, false);
 
 //$(document).on('loadpanel', '#projects', showProjectSQL);
 
@@ -348,7 +353,7 @@ function browseInscriptionsSQL(inscriptions_div) {
     console.log("browseInscriptionsSQL");
     var proj_id = $(inscriptions_div).data("proj_id");
     var offset = parseInt($(inscriptions_div).data("offset"));
-    if(offset == null) { offset = 0; }
+    if((offset == null)||(isNaN(offset))) { offset = 0; }
     console.log("Proj Id: " + proj_id);
     if(db) {
       console.log("browseInscriptionsSQL");
@@ -427,7 +432,7 @@ function browseInscriptionsPager() {
 
     console.log("browseInscriptionsPager");
     console.log("offset: " + offset);
-    if(offset == null) { offset = 0; }
+    if((offset == null)||(isNaN(offset))) { offset = 0; }
     console.log("Proj Id: " + proj_id);
     if(db) {
       db.transaction(function (tx) {

@@ -70,9 +70,8 @@ body {
 }
 
 
-#afui .afmScrollbar { background:white !important; } /* Sets the color of the scrollbar */
 
-#afui .afmScrollPanel { width:100%; min-height:100%;overflow:hidden;/*hack to auto expand height with floats*/ }
+#afui .afScrollPanel { width:100%; min-height:100%; }
 
 #afui {
 	position:absolute;
@@ -126,7 +125,7 @@ body {
 	font-size:18px;
 	font-weight:bold;
 	left:27.5%;
-	color:#fff;
+	color:inherit;
 	padding:10px 0;
 	text-shadow:rgba(0,0,0,0.8) 0 -1px 0;
 	text-align:center;
@@ -250,7 +249,18 @@ body {
 	
 }
 
-#afui #menu_scroller {
+#afui > #aside_menu {
+	z-index:1;
+	width:200px;
+	bottom:0;
+	height:100%;
+	display:block !important;
+	position:absolute; top:0; right:0;
+	
+}
+
+
+#afui #menu_scroller, #afui #aside_menu_scroller {
 	padding-bottom:10px;
 	overflow-y:auto;
 	overflow-x:hidden;
@@ -259,7 +269,7 @@ body {
 }
 
 
-#afui #menu_scroller > * {
+#afui #menu_scroller > *,  #afui #aside_menu_scroller > * {
 	-webkit-backface-visibility: hidden;
 	-webkit-perspective: 1000;
 }
@@ -380,7 +390,7 @@ body {
 	UI
 **********************************************************/
 
-#afui .ui-icon {
+.ui-icon {
 	background: 						#666;
 	background: 						rgba(0,0,0,.4);
 	background-repeat: no-repeat;
@@ -565,10 +575,33 @@ body {
 	#afui .menuButton { display:none;	}
 }
 
+@media print {
+      body {
+          overflow:visible;
+      }
+      #afui #content{
+      	overflow: visible;
+      	left:0;      	
+      }
+      #afui {
+      	overflow:visible;
+      }
+      #afui .panel {
+      	overflow-x:visible !important;
+      	overflow-y:visible !important;
+      	overflow:visible !important;
+      }
+}
+
 /*src/appframework.css*/
 /* blue #0190d6
 
  */
+
+ @-ms-viewport {
+  width: device-width;
+}
+
 
 #afui {
     background:white;
@@ -580,6 +613,7 @@ body {
     background:#0088D1;
     border:none;
     border-bottom:1px solid #0088D1;
+    color:white;
  }
 
 #afui  #header h1 {
@@ -1275,6 +1309,30 @@ body {
 	border-bottom-right-radius: 6px;
 }
 
+#afui .button-grouped.flex {
+	display: -webkit-box;
+  	display: -moz-box;
+  	display: -ms-flexbox;
+  	display: -webkit-flex;
+  	display: flex;
+}
+
+#afui .button-grouped.flex > .button {
+	-webkit-box-flex: 1;
+  	-moz-box-flex: 1 auto;
+  	-webkit-flex: 1 auto;
+  	-ms-flex: 1 auto;
+  	flex: 1 auto;
+
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+#afui .button-grouped.flex.vertical {
+	display: inline-block;
+}
+
 #afui .button-grouped.vertical * {
 	border-radius:0px;
 	display:block;
@@ -1571,7 +1629,18 @@ color:inherit;
 }
 
 /*../plugins/css/af.selectbox.css*/
-	#afSelectBoxContainer {
+	#afModalMask {
+		position:absolute;
+		top:0px;
+		left:0px;
+		width:100%;
+		height:100%;
+		background:transparent;
+		display:none;
+		z-index:9999;
+	}
+
+	#afSelectBoxContainer {
 		position:absolute;
 		display:block;
 		width:90%;
@@ -1580,7 +1649,6 @@ color:inherit;
 		min-height:100px;
 		background:#303030;
 		color:white;
-		display:none;
 		overflow:hidden;
 		z-index:9999;
 		max-height:300px;
