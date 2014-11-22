@@ -60,8 +60,8 @@ var onDeviceReady = function () {
 	$('#saved').bind("swipeRight", swipeBack);
 
     	console.log("Opening database");
- 	db = window.sqlitePlugin.openDatabase("inscriptions", "1.0", "inscriptions", 222222);
- 	notesdb = window.sqlitePlugin.openDatabase("notebook", "1.0", "notebook", 222222);
+ 	db = window.sqlitePlugin.openDatabase({name: "inscriptions.db"});
+ 	notesdb = window.sqlitePlugin.openDatabase({name: "notebook.db"});
 };
 	
 document.addEventListener("deviceready", onDeviceReady, false);
