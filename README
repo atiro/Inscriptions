@@ -1,0 +1,7 @@
+Android App (Cordova/Phonegap based) to display Inscriptions using EpiDoc
+data.
+
+	data - EPiDoc XML Files for different epigraphic projects
+	scripts - Python scripts to convert EpiDoc data into SQLite DB
+	Inscriptions - Cordova project to build app for android (and any
+			others systems supported, in theory)
