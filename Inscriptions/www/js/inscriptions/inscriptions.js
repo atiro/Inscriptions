@@ -589,7 +589,9 @@ function showInscriptionUI(tx, results) {
 	s += '<h3>Photographs</h3><br/><br/>';
 
 	db.transaction(function(tx) {
+		console.log("Looking for photos for inscription: " + i_id);
 		tx.executeSql("select id, thumb_url from inscription_photo where inscription_id = " + i_id, [], function(tx, res) {
+			console.log("Got photos: " + res.rows.length);
 		        for (var i = 0; i < res.rows.length; i++) {
 				var photo_id = res.rows.item(i).id;
 				var photo_url = res.rows.item(i).thumb_url;
@@ -600,44 +602,45 @@ function showInscriptionUI(tx, results) {
 				s += '</div>';
 			}
 			if(res.rows.length == 0) {
+				console.log("No photos found");
 				s += '<div class="photo">';
 				s += '<span>No photographs currently available.</span>';
 				s += '</div>';
 			}
-		});
-	});
+			// Future Functionality
 
-	// Future Functionality
+			s += '<div id="inscription-buttons">';
+			s += '<form id="inscription-functions">';
+			//	s += '<input class="af-ui-forms" type="button" value="Ask a Question">\n';
+			s += '<br/><br/>';
+			// TODO - website ?
+			// s += '<input class="af-ui-forms" type="button" value="Discuss Inscription"><br/><br/>\n';
+			s += '<input class="af-ui-forms" type="button" value="Save Inscription" id="save_button" onClick="saveInscription(' + i_projid + ',' + i_id + ',\'' + i_title.replace(/\n/gm, '') + '\'); return false;">\n';
+			s += '</form>';
+			s += '</div>';
 
-	s += '<div id="inscription-buttons">';
-	s += '<form id="inscription-functions">';
-//	s += '<input class="af-ui-forms" type="button" value="Ask a Question">\n';
-	s += '<br/><br/>';
-	// TODO - website ?
-	// s += '<input class="af-ui-forms" type="button" value="Discuss Inscription"><br/><br/>\n';
-	s += '<input class="af-ui-forms" type="button" value="Save Inscription" id="save_button" onClick="saveInscription(' + i_projid + ',' + i_id + ',\'' + i_title.replace(/\n/gm, '') + '\'); return false;">\n';
-	s += '</form>';
-	s += '</div>';
+			s += '</div>'; // col1-3
+			s += '</div>'; //grid
 
-	s += '</div>'; // col1-3
-	s += '</div>'; //grid
+ 		       $('#inscription').attr('title', i_title);
+ 		       $.ui.updatePanel('#inscription', s);
 
-        $('#inscription').attr('title', i_title);
-        $.ui.updatePanel('#inscription', s);
-
-	// var infoscroller = $('#infoslider').scroller({'scollingLocked': true, 'bubbles': false});
-	var infoscroller = $('#infoslider').scroller({'bubbles': false, 'infinite': true, 'scrollSkip': true});
+			// var infoscroller = $('#infoslider').scroller({'scollingLocked': true, 'bubbles': false});
+			var infoscroller = $('#infoslider').scroller({'bubbles': false, 'infinite': true, 'scrollSkip': true});
 /*
-	$.bind(infoscroller, 'scrollstart', function () {
+		$.bind(infoscroller, 'scrollstart', function () {
 		console.log("scroll start");
 	});
 	*/
 
-	infoscroller.enable();
+			infoscroller.enable();
 
-	//PhotoSwipe.attach(window.document.querySelectorAll('#photo a'), {});
+			//PhotoSwipe.attach(window.document.querySelectorAll('#photo a'), {});
 
-	console.log(s);
+			console.log(s);
+		});
+	});
+
     }
 
 }
