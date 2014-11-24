@@ -21,6 +21,10 @@
                         {
                             "xml": "<feature name=\"SQLitePlugin\"><param name=\"android-package\" value=\"org.pgsqlite.SQLitePlugin\" /></feature>",
                             "count": 1
+                        },
+                        {
+                            "xml": "<feature name=\"SplashScreen\"><param name=\"android-package\" value=\"org.apache.cordova.splashscreen.SplashScreen\" /></feature>",
+                            "count": 1
                         }
                     ]
                 }
@@ -29,6 +33,9 @@
     },
     "installed_plugins": {
         "com.brodysoft.sqlitePlugin": {
+            "PACKAGE_NAME": "uk.org.tiro.android.Inscriptions"
+        },
+        "org.apache.cordova.splashscreen": {
             "PACKAGE_NAME": "uk.org.tiro.android.Inscriptions"
         }
     },

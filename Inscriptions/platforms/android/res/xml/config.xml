@@ -4,6 +4,9 @@
     <feature name="SQLitePlugin">
         <param name="android-package" value="org.pgsqlite.SQLitePlugin" />
     </feature>
+    <feature name="SplashScreen">
+        <param name="android-package" value="org.apache.cordova.splashscreen.SplashScreen" />
+    </feature>
     <name>Inscriptions</name>
     <description>
     	Application to view Ancient Inscriptions.
@@ -14,4 +17,5 @@
     <content src="index.html" />
     <access origin="*" />
     <preference name="orientation" value="landscape" />
+    <preference name="SplashScreen" value="" />
 </widget>

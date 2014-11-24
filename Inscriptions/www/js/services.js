@@ -70,8 +70,8 @@ angular.module('inscriptionsApp.services', ['inscriptionsApp.config'])
 .factory('Inscription', function(DB) {
 	var self = this;
 
-	self.all = function() {
-		return DB.query('SELECT * FROM inscription where project_id = 12')
+	self.all = function(id) {
+		return DB.query('SELECT * FROM inscription where project_id = ? limit 100', [id])
 		.then(function(result){
 			return DB.fetchAll(result);
 		});

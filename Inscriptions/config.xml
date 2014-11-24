@@ -10,4 +10,8 @@
     <content src="index.html" />
     <access origin="*" />
     <preference name="orientation" value="landscape"/>
+    <preference name="SplashScreen" value="" />
+    <!-- 
+    <preference name="SplashScreenDelay" value="3000" />
+    -->
 </widget>

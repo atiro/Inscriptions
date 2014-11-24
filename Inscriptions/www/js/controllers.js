@@ -15,7 +15,7 @@ angular.module('inscriptionsApp.controllers', ['inscriptionsApp.services'])
 	$scope.inscriptions = [];
 	$scope.inscription = null;
 	// Get all the project inscriptions
-	Inscription.all().then(function(inscriptions) {
+	Inscription().all($scope.navigator.getCurrentPage().options.project).then(function(inscriptions) {
 		$scope.inscriptions = inscriptions;
 	});
 	// Get one project inscription 
