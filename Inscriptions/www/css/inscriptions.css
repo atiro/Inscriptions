@@ -396,3 +396,39 @@
 .col2 h3 {
 				text-align: center;
 }
+
+.device {
+  width: 800px;
+  height: 340px;
+  padding: 30px 40px;
+  border-radius: 20px;
+  background: #111;
+  border: 3px solid white;
+  margin: 5px auto;
+  position: relative;
+  box-shadow: 0px 0px 5px #000;
+}
+
+.device .arrow-left {
+  background: url(img/arrows.png) no-repeat left top;
+  position: absolute;
+  left: 10px;
+  top: 50%;
+  margin-top: -15px;
+  width: 17px;
+  height: 30px;
+}
+.device .arrow-right {
+  background: url(img/arrows.png) no-repeat left bottom;
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  margin-top: -15px;
+  width: 17px;
+  height: 30px;
+}
+.swiper-container {
+  height: 320px;
+  width: 780px;
+}
+

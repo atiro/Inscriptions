@@ -96,65 +96,32 @@ function listProjectsUI(tx, results) {
         var s_inprogress = "";
 	var col_count = 0;
 	var col = 1;
-	s += '<div data-position="static" class="grid">';
+	s += '<div class="device">';
+	s += '<a class="arrow-left" href="#"></a>';
+	s += '<a class="arrow-right" href="#"></a>';
+	s += '<div class="swiper-container">';
+	s += '<div class="swiper-wrapper">';
+	/*
 	s_complete += '<div class="container col3" id="projcol0">';
 	s_complete += '<h3>Completed Projects</h3>';
 	s_inprogress += '<div class="container col3" id="projcol1">';
 	s_inprogress += '<h3>Projects In Progress</h3>';
+	*/
 	var num_per_col = results.rows.length / 3;
         for (var i = 0; i < results.rows.length; i++) {
-	    if(col_count > num_per_col) {
-			col_count = 0;
-			col += 1;
-	    		s_inprogress += '</div>';
-			s_inprogress += '<div class="container col3" id="projcol' + col + '">';
-	    }
             var id = results.rows.item(i).id;
             var name = results.rows.item(i).name;
             var complete = results.rows.item(i).complete;
             var num_inscriptions = results.rows.item(i).num_inscriptions;
 	    if(complete) {
-		    s_complete += '<div class="project-live"><h3><a href="" onClick="$(\'#project\').data(\'num_inscriptions\', \'' + num_inscriptions + '\'); $(\'#project\').data(\'proj_id\', \'' + id + '\'); $.ui.loadContent(\'#project\', false, false, \'pop\'); return false;">' + name + '</a></h3></div>';
-	    } else {
-		    s_inprogress += '<div class="project-wip"><h3><a href="" onClick="$(\'#project\').data(\'proj_id\', \'' + id + '\'); $.ui.loadContent(\'#project\', false, false, \'pop\'); return false;">' + name + '</a></h3></div>';
-		    col_count += 1;
+  	    s += '<div class="swiper-slide"><a href="" onClick="$(\'#project\').data(\'num_inscriptions\', \'' + num_inscriptions + '\'); $(\'#project\').data(\'proj_id\', \'' + id + '\'); $.ui.loadContent(\'#project\', false, false, \'pop\'); return false;"><img src="img/projects/irt-image.jpg"/></a></div>';
 	    }
 	}
-	s += s_complete;
 	s += '</div>'; // End complete col
-	s += s_inprogress;
-	s += '</div>'; // End second in-progress col
+	s += '</div>'; // End complete col
 	s += '</div>'; // grid
 
 	console.log(s);
-
-	s += '<div class="grid">';
-	s += '<div class="col2-3">';
-	// Inscription of the Day
-
-	s += '<h3>Inscription of the Day</h3>';
-	s += randomInscription();
-
-	s += '</div>';
-	s += '<div class="col1-3">';
-
-	// Research Project Banner Board
-
-	s += '<div id="plugbar">';
-	s += '<h4>With thanks to:</h4><br>';
-	s += '<div class="researchplug block0"><a href="http://epidoc.sf.net/"><h4>EpiDoc</h4></a></div>';
-	s += '<div class="researchplug block2"><a href="http://pleiades.stoa.org/"><h4>Pleiades</h4></a></div>';
-	s += '<div class="researchplug block3"><a href="http://pelagios-project.blogspot.co.uk/p/about-pelagios.html"><h4>Pelagios</h4></a></div>';
-	s += '<div class="researchplug block4" style="clear: left;"><a href="http://www.perseus.tufts.edu/hopper/"><h4>Perseus</h4></a></div>';
-	s += '<div class="researchplug block1"><a href="http://www.digitalclassicist.org/"><h4>Digital Classicist</h4></a></div>';
-	s += '<div class="researchplug block2"><a href="http://www.stoa.org/"><h4>Stoa</h4></a></div>';
-
-	// Others
-	s += '</div>';
-
-	// End Grid
-	s += '</div>';
-	s += '</div>';
 
 	console.log("Updating Panel: " + s);
 	$.ui.updatePanel('#panel_home', s);
