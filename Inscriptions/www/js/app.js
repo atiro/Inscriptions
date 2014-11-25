@@ -1,6 +1,6 @@
 (function(){
   'use strict';
-  var module = angular.module('inscriptionsApp', ['onsen', 'inscriptionsApp.services', 'inscriptionsApp.controllers'])
+  var module = angular.module('inscriptionsApp', ['onsen', 'dcbImgFallback', 'inscriptionsApp.services', 'inscriptionsApp.controllers'])
   		.run(function(DB) {
 			DB.init();
 		});
@@ -15,6 +15,10 @@
         alert('tappaed');
       }, 100);
     };
+
+    $scope.showProject = function(id) {
+      $scope.ons.navigator.pushPage('showProject.html', {proj_id: id});
+    };
   });
 
   module.controller('DetailController', function($scope, $data) {
@@ -24,11 +28,6 @@
   module.controller('MasterController', function($scope, $data) {
     $scope.items = $data.items;  
     
-    $scope.showDetail = function(index) {
-      var selectedItem = $data.items[index];
-      $data.selectedItem = selectedItem;
-      $scope.ons.navigator.pushPage('detail.html', {title : selectedItem.title});
-    };
   });
 
   module.factory('$data', function() {

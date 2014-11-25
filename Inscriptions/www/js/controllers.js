@@ -11,11 +11,11 @@ angular.module('inscriptionsApp.controllers', ['inscriptionsApp.services'])
 		$scope.project = project;
 	});
 })
-.controller('InscriptionsCtrl', function($scope, Inscription) {
+.controller('InscriptionsCtrl', function($scope, $attrs, Inscription) {
 	$scope.inscriptions = [];
 	$scope.inscription = null;
 	// Get all the project inscriptions
-	Inscription().all($scope.navigator.getCurrentPage().options.project).then(function(inscriptions) {
+	Inscription.all($attrs.proj_id).then(function(inscriptions) {
 		$scope.inscriptions = inscriptions;
 	});
 	// Get one project inscription 

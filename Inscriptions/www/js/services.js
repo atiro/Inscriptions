@@ -6,16 +6,6 @@ angular.module('inscriptionsApp.services', ['inscriptionsApp.config'])
 	self.init = function() {
 		self.db = window.sqlitePlugin.openDatabase({name: 'inscriptions.db'});
 	}
-	/*
-		angular.forEach(DB_CONFIG.tables, function(table) {
-			var columns = [];
-
-			angular.forEach(table.columns, function(column) {
-				columns.push(column.name + ' ' + column.type);
-			});
-
-			var query = 
-	*/
 
 	self.query = function(query, bindings) {
 		bindings = typeof bindings !== 'undefined' ? bindings : [];
@@ -71,7 +61,7 @@ angular.module('inscriptionsApp.services', ['inscriptionsApp.config'])
 	var self = this;
 
 	self.all = function(id) {
-		return DB.query('SELECT * FROM inscription where project_id = ? limit 100', [id])
+		return DB.query('SELECT i.id as i_id, i.title as i_title, i.description as i_description, ip.thumb_url as url FROM inscription as i, inscription_photo as ip where i.project_id = ? AND ip.inscription_id = i.id order by i_id limit 100', [3])
 		.then(function(result){
 			return DB.fetchAll(result);
 		});

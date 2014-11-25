@@ -14,6 +14,7 @@
   <script src="lib/onsen/js/angular/angular.js"></script>    
   <script src="lib/onsen/js/onsenui.js"></script>    
   <script src="js/OpenLayers.mobile.js"></script>
+  <script src="js/angular.dcb-img-fallback.min.js"></script>
   <script src="cordova.js"></script>  
   <script src="SQLitePlugin.js"></script>
  <!--  <script src="js/inscriptions/inscriptions.js"></script> -->
@@ -24,7 +25,6 @@
 
   <script>
     ons.ready(function() {
-			$scope.navigator = $window.inscriptionsApp.navi;
     });
   </script>
 
@@ -99,7 +99,7 @@
 		}
 		.splash p.credit span {
 			color: white;
-			font: bold 8px/18px Helvetica, Sans-Serif;
+			font: bold 8px/12px Helvetica, Sans-Serif;
 			letter-spacing: 1px;
 			background: rgb(0, 0, 0);
 			background: rgba(0, 0, 0, 0.7);
@@ -112,7 +112,6 @@
 
 <!--
 <div>
-  <div ons-if-platform="portrait">
   <ons-split-view
 			secondary-page="splashProjects.html"
 			main-page="listProjects.html"
@@ -121,7 +120,6 @@
   </ons-split-view>
   </div>
 
-  <div ons-if-platform="landscape">
 -->
   <ons-navigator animation="slide" var="navi">
 
@@ -131,7 +129,7 @@
 			   to handle project description spacing ?-->
 	  <ons-carousel-item>
 			<div class="splash">
-			  <img src="img/projects/aphrodisias-1024.jpeg" ng-click="navi.pushPage('showProject.html', {project: 3});">
+			  <img src="img/projects/aphrodisias-1024.jpeg" ng-click="showProject(3)">
 				<h2><span>Inscriptions of Aphrodisias</span></h2>
 				<p class="description"><span>This is the first edition of the online corpus of the Inscriptions of Aphrodisias recorded up to 1994.</span></p>
 		  </div>
@@ -170,7 +168,7 @@
 				<h2><span>Curse Tablets of Roman Britain</span></h2>
 				<p class="description"><span>Of the provinces of the former Roman empire, Britain is among the most fertile in curse tablets.<span class='spacer'></span><br /><span class="spacer"></span> At least 250 of the known 500+ Latin tablets have been found in Britain and more continue to be recovered.</span></p>
 				<p class="partners"><span>Oxford University</span></p>
-				<p class="credit">Photo Credit: Ian Hex</p>
+				<p class="credit">Photo: Ian Hex</p>
 			</div>
 		</ons-carousel-item>
   </ons-carousel>
@@ -202,17 +200,21 @@
     </ons-page>
  </ons-template>
 
- <ons-template id="splashProjects.html">
-   <ons-page>
-	   <img src="img/projects/vindolanda.jpeg"/>
-	 </ons-page>
- </ons-template>
-
  <ons-template id="showProject.html">
-	 <ons-page>
-	    <ons-list ng-controller="InscriptionsCtrl">
+	 <ons-page on-device-backbutton="navi.popPage()">
+	    <ons-list ng-controller="InscriptionsCtrl" proj_id="3">
 			  <ons-list-item ng-repeat="inscription in inscriptions" ng-click="navi.pushPage('showInscription.html', {inscription: 500})">
-						{{inscription.title}} - {{inscription.description | limitTo:50}}...
+				  <ons-row>
+					  <ons-col width="120px">
+						   <div class="item-thum"><img src="{{inscription.url}}" fallback-src</img></div>
+					  </ons-col>
+						<ons-col>
+						  <header>
+							  <span class="item-title">{{inscription.i_title}}</span>
+							</header>
+							<p class="item-desc">{{inscription.i_description | limitTo:140}}...</p>
+							</ons-col>
+					</ons-row>
 				</ons-list-item>
 		  </ons-list>
 	 </ons-page>
