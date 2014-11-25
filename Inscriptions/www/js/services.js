@@ -38,7 +38,7 @@ angular.module('inscriptionsApp.services', ['inscriptionsApp.config'])
 
 	return self;
 })
-.factory('Project', function(DB) {
+.factory('Projects', function(DB) {
 	var self = this;
 
 	self.all = function() {
@@ -57,11 +57,11 @@ angular.module('inscriptionsApp.services', ['inscriptionsApp.config'])
 
 	return self;
 })
-.factory('Inscription', function(DB) {
+.factory('Inscriptions', function(DB) {
 	var self = this;
 
 	self.all = function(id) {
-		return DB.query('SELECT i.id as i_id, i.title as i_title, i.description as i_description, ip.thumb_url as url FROM inscription as i, inscription_photo as ip where i.project_id = ? AND ip.inscription_id = i.id order by i_id limit 100', [3])
+		return DB.query('SELECT i.id as i_id, i.title as i_title, i.description as i_description, ip.thumb_url as url FROM inscription as i LEFT OUTER JOIN inscription_photo as ip ON i_id = ip.inscription_id where i.project_id = ? group by i_id order by i_id limit 100', [id])
 		.then(function(result){
 			return DB.fetchAll(result);
 		});
@@ -71,6 +71,30 @@ angular.module('inscriptionsApp.services', ['inscriptionsApp.config'])
 		return DB.query('SELECT * FROM inscription WHERE id = ?', [id])
 			.then(function(result){
 				return DB.fetch(result);
+		});
+	};
+
+	return self;
+})
+.factory('InscriptionContent', function(DB) {
+	var self = this;
+
+	self.getById = function(id) {
+		return DB.query('SELECT type,content FROM inscription_text as it where it.inscription_id = ? order by type asc', [id])
+		.then(function(result){
+			return DB.fetchAll(result);
+		});
+	};
+
+	return self;
+})
+.factory('InscriptionImages', function(DB) {
+	var self = this;
+
+	self.getById = function(id) {
+		return DB.query('SELECT id, thumb_url, full_url, title from inscription_photo where inscription_id = ?', [id])
+		.then(function(result){
+			return DB.fetchAll(result);
 		});
 	};
 

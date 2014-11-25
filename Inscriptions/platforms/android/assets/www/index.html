@@ -15,6 +15,7 @@
   <script src="lib/onsen/js/onsenui.js"></script>    
   <script src="js/OpenLayers.mobile.js"></script>
   <script src="js/angular.dcb-img-fallback.min.js"></script>
+  <script src="js/angular-sanitize.js"></script>    
   <script src="cordova.js"></script>  
   <script src="SQLitePlugin.js"></script>
  <!--  <script src="js/inscriptions/inscriptions.js"></script> -->
@@ -38,6 +39,7 @@
       width: 50px;
       height: 50px;
       border-radius: 4px;
+			padding: 3px;
     }
     .item-title {
       font-size: 15px;
@@ -136,35 +138,35 @@
 		</ons-carousel-item>
 	  <ons-carousel-item>
 		  <div class="splash">
-			  <img src="img/projects/ogham-1024.jpeg" ng-click="navi.pushPage('showProject.html', {project: 12});">
+			  <img src="img/projects/ogham-1024.jpeg" ng-click="showProject(12)">
 				<h2><span>Ogham in 3D</span></h2>
 				<p class="description"><span>The Ogham in 3D project aims to digitise the approximately 400 Irish ogham inscriptions.</span></p>
 		  </div>
 		</ons-carousel-item>
 	  <ons-carousel-item>
 		  <div class="splash">
-			  <img src="img/projects/vindolanda-1024.jpeg" ng-click="navi.pushPage('showProject.html', {project: 6});">
+			  <img src="img/projects/vindolanda-1024.jpeg" ng-click="showProject(6)">
 				<h2><span>Vindolanda Tablets</span></h2>
 				<p class="description"><span>The Vindolanda writing tablets, written in ink on post-card sized sheets of wood, have<span class='spacer'></span><br /><span class="spacer"></span>been excavated at the fort of Vindolanda, immediately south of Hadrian’s Wall in northern England.</span></p>
 		  </div>
 		</ons-carousel-item>
 	  <ons-carousel-item>
 		  <div class="splash">
-			  <img src="img/projects/aphrodisias-frieze-1024.jpeg" ng-click="navi.pushPage('showProject.html', {project: 1});">
+			  <img src="img/projects/aphrodisias-frieze-1024.jpeg" ng-click="showProject(1)">
 				<h2><span>Aphrodisias in Late Antiquity</span></h2>
 				<p class="description"><span>Charlotte Roueché, Aphrodisias in Late Antiquity: The Late Roman and Byzantine Inscriptions.</span></p>
 			</div>
 		</ons-carousel-item>
 	  <ons-carousel-item>
 		  <div class="splash">
-			  <img src="img/projects/vindolanda2-1024.jpeg" ng-click="navi.pushPage('showProject.html', {project: 19});">
+			  <img src="img/projects/vindolanda2-1024.jpeg" ng-click="showProject(19)">
 				<h2><span>Vindolanda Tablets Online II</span></h2>
 				<p class="description"><span>This project is linked in with the Vindolanda Tablets Online(VTO) project from 2003.</span></p>
 			</div>
 		</ons-carousel-item>
 	  <ons-carousel-item>
 		  <div class="splash">
-			  <img src="img/projects/roman-britain-1024.jpeg" ng-click="navi.pushPage('showProject.html', {project: 10});">
+			  <img src="img/projects/roman-britain-1024.jpeg" ng-click="showProject(10)">
 				<h2><span>Curse Tablets of Roman Britain</span></h2>
 				<p class="description"><span>Of the provinces of the former Roman empire, Britain is among the most fertile in curse tablets.<span class='spacer'></span><br /><span class="spacer"></span> At least 250 of the known 500+ Latin tablets have been found in Britain and more continue to be recovered.</span></p>
 				<p class="partners"><span>Oxford University</span></p>
@@ -202,11 +204,11 @@
 
  <ons-template id="showProject.html">
 	 <ons-page on-device-backbutton="navi.popPage()">
-	    <ons-list ng-controller="InscriptionsCtrl" proj_id="3">
-			  <ons-list-item ng-repeat="inscription in inscriptions" ng-click="navi.pushPage('showInscription.html', {inscription: 500})">
+	    <ons-list ng-controller="InscriptionsCtrl">
+			  <ons-list-item ng-repeat="inscription in inscriptions" ng-click="showInscription(inscription.i_id)">
 				  <ons-row>
 					  <ons-col width="120px">
-						   <div class="item-thum"><img src="{{inscription.url}}" fallback-src</img></div>
+						   <div class="item-thum"><img src="{{inscription.url}}" fallback-src></img></div>
 					  </ons-col>
 						<ons-col>
 						  <header>
@@ -220,50 +222,30 @@
 	 </ons-page>
  </ons-template>
 
-  <ons-template id="detail.html">
-    <ons-page ng-controller="DetailController">
+ <ons-template id="showInscription.html">
+	 <ons-page on-device-backbutton="navi.popPage()">
+			<ons-carousel style="align: center; height: 100px; width: 100%" ng-controller="InscriptionImagesCtrl" ng-show="inscription_images.length > 0">
+			   <ons-carousel-item ng-repeat="image in inscription_images">
+				 		<img src="{{image.thumb_url}}" fallback-src></img>
+				 </ons-carousel-item>
+			</ons-carousel>
+	    <ons-list ng-controller="InscriptionContentCtrl"> 
+			  <ons-list-item ng-repeat="content in inscription_content">
+	        <ons-row align="center">
+					 <div ng-switch on ="content.type">
+					  <div ng-switch-when="0"> <ons-col> Text </ons-col> </div>
+					  <div ng-switch-when="1"> <ons-col> Translation </ons-col> </div>
+					  <div ng-switch-when="2"> <ons-col> Commentary </ons-col> </div>
+					  <div ng-switch-when="3"> <ons-col> Bibliography </ons-col> </div>
+					 </div>
+						<ons-col> {{content.content}} </ons-col>
+				  </ons-row>
+			  </ons-list-item>
+			</ons-list>
+	 </ons-page>
+ </ons-template>
 
-      <ons-toolbar>
-        <div class="left"><ons-back-button>Back</ons-back-button></div>
-        <div class="center">Details</div>
-      </ons-toolbar>
-
-      <ons-list modifier="inset" style="margin-top: 10px">
-        <ons-list-item class="item">
-          <ons-row>
-            <ons-col width="60px"> 
-              <div class="item-thum"></div>
-            </ons-col>
-            <ons-col>
-              <header>
-                <span class="item-title">{{item.title}}</span>
-                <span class="item-label">{{item.label}}</span>
-              </header>
-              <p class="item-desc">{{item.desc}}</p>
-            </ons-col>
-          </ons-row>
-        </ons-list-item>
-
-        <ons-list-item modifier="chevron" ng-click="doSomething()">
-          <ons-icon icon="ion-chatboxes" fixed-width="true" style="color: #ccc"></ons-icon>
-          Add a note
-        </ons-list-item>
-      </ons-list>
-
-      <ons-list style="margin-top: 10px">
-        <ons-list-item class="item" ng-repeat="i in [1,2,3]">
-          <header>
-            <span class="item-title">Lorem ipsum dolor sit amet</span>
-          </header>
-          <p class="item-desc">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
-        </ons-list-item>
-      </ons-list>
-
-      <br>
-
-    </ons-page>
-  </ons-template>
-	</ons-navigator>
+</ons-navigator>
 
 </body>  
 </html>
