@@ -126,7 +126,7 @@
   <ons-navigator var="navi">
 
   <ons-page>
-  <ons-carousel fullscreen auto-scroll overscrollable swipable initial-index="2">
+  <ons-carousel fullscreen auto-scroll overscrollable swipable initial-index="randProject()">
 	  <!-- TODO This should be generated, use project id for image url. How
 			   to handle project description spacing ?-->
 	  <ons-carousel-item>
@@ -187,6 +187,7 @@
 
  <ons-template id="showProject.html">
 	 <ons-page on-device-backbutton="navi.popPage()">
+	    <ons-toolbar><div class="center">{{proj_title}}</div></ons-toolbar>
 	    <ons-list ng-controller="InscriptionsCtrl">
 			  <ons-list-item ng-repeat="inscription in inscriptions" ng-click="showInscription(inscription.i_id)">
 				  <ons-row>
@@ -209,7 +210,9 @@
 	 <ons-page on-device-backbutton="navi.popPage()">
 			<ons-carousel style="align: center; height: 100px; width: 100%" ng-controller="InscriptionImagesCtrl" ng-show="inscription_images.length > 0">
 			   <ons-carousel-item ng-repeat="image in inscription_images">
-						<div class="item-thum"><img src="{{image.thumb_url}}" fallback-src="img/no_img.gif" loading-src="img/loading_img.gif"/></div>
+						<div class="item-thum">
+						   <img src="{{image.thumb_url}}" fallback-src="img/no_img.gif" loading-src="img/loading_img.gif"/>
+						</div>
 				 </ons-carousel-item>
 			   <ons-carousel-item>
 				    <div class="item-thum"><img src="http://insaph.kcl.ac.uk/images/photo/thumb/73_P_04A.jpg"/></div>
@@ -219,17 +222,23 @@
 			  <ons-list-item ng-repeat="content in inscription_content">
 	        <ons-row align="center">
 					 <div ng-switch on = "content.type">
-					  <div ng-switch-when="0"> <ons-col><b> Text </b> </ons-col> </div>
-					  <div ng-switch-when="1"> <ons-col><b> Translation </b></ons-col> </div>
-					  <div ng-switch-when="2"> <ons-col><b> Commentary </b></ons-col> </div>
-					  <div ng-switch-when="3"> <ons-col><b> Bibliography</b> </ons-col> </div>
+					  <div ng-switch-when="0"> <ons-col><b> Text </b> </ons-col>
+																	 <ons-col ng-bind-html="text"></ons-col>
+						</div>
+					  <div ng-switch-when="1"> <ons-col><b> Translation </b></ons-col>
+																	 <ons-col ng-bind-html="translation"></ons-col>
+						</div>
+					  <div ng-switch-when="2"> <ons-col><b> Commentary </b></ons-col>
+																	 <ons-col ng-bind-html="commentary"></ons-col>
+						</div>
+					  <div ng-switch-when="3"> <ons-col><b> Bibliography</b> </ons-col>
+																	 <ons-col ng-bind-html="bibliography"></ons-col>
 					 </div>
-						<ons-col> {{content.content}} </ons-col>
 				  </ons-row>
 			  </ons-list-item>
 			</ons-list>
-			<ons-row ng-show="inscription_content.length==0">
-			  <ons-col>No data currently available for this inscription</ons-col>
+			<ons-row ng-show="inscription_content.length < 1">
+			  <ons-col><p>No data is currently available for this inscription</p></ons-col>
 		 </ons-row>
 	 </ons-page>
  </ons-template>

@@ -37,29 +37,28 @@ angular.module('inscriptionsApp.controllers', ['ngSanitize', 'inscriptionsApp.se
 	// Get all the project inscriptions
 	InscriptionContent.getById(id).then(function(inscription_content) {
 		$scope.inscription_content = inscription_content;
+	        for(var content in inscription_content) {
+		  if(content.type == 0) {
+			$log.log("Inscription: Text");
+			$scope.text = content.content.replace(/<[^>]+>/gm, '');
+		  } else if(content.type == 1) {
+			$log.log("Inscription: Translation");
+			$scope.translation = content.content;
+		  } else if(content.type == 2) {
+			$log.log("Inscription: Commentary");
+			$scope.commentary = content.content;
+		  } else if(content.type == 3) {
+			$log.log("Inscription: Bibliography");
+			$scope.bibliography = content.content;
+		  } else {
+			$log.log("Inscription Type: " + content.type);
+		  }
+	}
 	});
 
 	$log.log("Parsing inscription content for inscription: " + id);
 	$log.log("Inscription content length: : " + $scope.inscription_content.length);
 
-	for(var type in $scope.inscription_content) {
-		if(type == 0) {
-			$log.log("Inscription: Text");
-			$scope.text = $scope.inscription_content[type];
-			$scope.text = $scope.text.replace(/<[^>]+>/gm, '')
-		} else if(type == 1) {
-			$log.log("Inscription: Translation");
-			$scope.translation = $scope.inscription_content[type];
-		} else if(type == 2) {
-			$log.log("Inscription: Commentary");
-			$scope.commentary = $scope.inscription_content[type];
-		} else if(type == 3) {
-			$log.log("Inscription: Bibliography");
-			$scope.bibliography = $scope.inscription_content[type];
-		} else {
-			$log.log("Inscription Type: " + type);
-		}
-	}
 	// Get one project inscription 
 	//Inscriptions.getById(2).then(function(inscription) {
 	//	$scope.inscription = inscription;

@@ -7,6 +7,7 @@
 
   document.addEventListener('deviceready', function() {
   	angular.bootstrap(document, ['inscriptionsApp']);
+
   }, false);
 
   module.controller('AppController', function($scope) {
@@ -15,6 +16,12 @@
         alert('tappaed');
       }, 100);
     };
+
+    Hammer(window, {prevent_default:true} ).on("swiperight",function(event) { 
+        if (navi.getPages().length > 1) {
+	        navi.popPage();
+	}
+    });
 
     $scope.showProject = function(id, title) {
       $scope.ons.navigator.pushPage('showProject.html', {proj_id: id, proj_title: title});
@@ -28,12 +35,10 @@
     	var url = url;
     };
 
-/*
     $scope.randProject = function() {
     	// TODO don't hardcode this...
     	return Math.floor((Math.random() * 5))
     };
-    */
 
   });
 
