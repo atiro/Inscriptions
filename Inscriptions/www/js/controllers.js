@@ -11,6 +11,9 @@ angular.module('inscriptionsApp.controllers', ['ngSanitize', 'inscriptionsApp.se
 		$scope.project = project;
 	});
 })
+.controller('ProjectsTitleCtrl', function($scope) {
+	$scope.project_title = navi.getCurrentPage().options.proj_title;
+})
 .controller('InscriptionsCtrl', function($scope, Inscriptions) {
 	$scope.inscriptions = [];
 
@@ -24,6 +27,9 @@ angular.module('inscriptionsApp.controllers', ['ngSanitize', 'inscriptionsApp.se
 	//Inscriptions.getById(2).then(function(inscription) {
 	//	$scope.inscription = inscription;
 	//});
+})
+.controller('InscriptionTitleCtrl', function($scope) {
+	$scope.inscription_title = navi.getCurrentPage().options.inscription_title;
 })
 .controller('InscriptionContentCtrl', function($scope, $sce, $log, InscriptionContent) {
 	$scope.inscription_content = [];
@@ -54,7 +60,7 @@ angular.module('inscriptionsApp.controllers', ['ngSanitize', 'inscriptionsApp.se
 		  } else if(inscrip["type"] == 2) {
 			$log.log("Inscription: Commentary");
 			$scope.commentary = inscrip["content"];
-		  } else if(inscript["type"] == 3) {
+		  } else if(inscrip["type"] == 3) {
 			$log.log("Inscription: Bibliography");
 			$scope.bibliography = inscrip["content"];
 		  } else {

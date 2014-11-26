@@ -17,7 +17,7 @@
       }, 100);
     };
 
-    Hammer(window, {prevent_default:true} ).on("swiperight",function(event) { 
+    Hammer(window).on("swiperight",function(event) { 
         if (navi.getPages().length > 1) {
 	        navi.popPage();
 	}
@@ -27,8 +27,8 @@
       $scope.ons.navigator.pushPage('showProject.html', {proj_id: id, proj_title: title});
     };
 
-    $scope.showInscription = function(id) {
-      $scope.ons.navigator.pushPage('showInscription.html', {inscription_id: id});
+    $scope.showInscription = function(id, title) {
+      $scope.ons.navigator.pushPage('showInscription.html', {inscription_id: id, inscription_title: title});
     };
 
     $scope.showImage = function(url) {

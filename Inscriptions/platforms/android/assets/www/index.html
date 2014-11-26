@@ -187,13 +187,13 @@
 
  <ons-template id="showProject.html">
 	 <ons-page on-device-backbutton="navi.popPage()">
-	    <ons-toolbar><div class="center">{{proj_title}}</div></ons-toolbar>
+	    <ons-toolbar width="100%" ng-controller="ProjectsTitleCtrl"><div class="center">{{project_title}}</div></ons-toolbar>
 			<ons-scroller style="width: 100%; height: 90%;">
 	    <ons-list ng-controller="InscriptionsCtrl" class="page center">
-			  <ons-list-item ng-repeat="inscription in inscriptions" ng-click="showInscription(inscription.i_id)" class="list__item--tappable list__item__line-height" modifier="chevron">
+			  <ons-list-item ng-repeat="inscription in inscriptions" ng-click="showInscription(inscription.i_id, inscription.i_title)" class="list__item--tappable list__item__line-height" modifier="chevron">
 				  <ons-row>
 					  <ons-col width="120px">
-						   <div class="item-thum"><img src="{{inscription.url}}" fallback-src="img/no_img.gif" loading-src="img/loading_img.gif"></img></div>
+						   <div class="item-thum"><img src="{{inscription.i_imgurl}}" fallback-src="img/no_img.gif" loading-src="img/loading_img.gif"></img></div>
 					  </ons-col>
 						<ons-col>
 						  <header>
@@ -210,31 +210,34 @@
 
  <ons-template id="showInscription.html">
 	 <ons-page on-device-backbutton="navi.popPage()">
-			<ons-carousel style="align: center; height: 100px; width: 100%" ng-controller="InscriptionImagesCtrl" ng-show="inscription_images.length > 0">
+	    <ons-toolbar ng-controller="InscriptionTitleCtrl" width="100%"><div class="center">{{inscription_title}}</div></ons-toolbar>
+			<ons-carousel height="100%" direction="vertical" overscrollable auto-scroll swipable ng-controller="InscriptionImagesCtrl" ng-show="inscription_images.length > 0">
 			   <ons-carousel-item ng-repeat="image in inscription_images" style="background-color: gray;">
 						<div class="item-thum">
 						   <img src="{{image.thumb_url}}" fallback-src="img/no_img.gif" loading-src="img/loading_img.gif"/>
+							 {{$log.log("Image URL: " + image.thumb_url)}}
 						</div>
 				 </ons-carousel-item>
-			   <ons-carousel-item>
-				    <div class="item-thum"><img src="http://insaph.kcl.ac.uk/images/photo/thumb/73_P_04A.jpg"/></div>
-						</ons-carousel-item>
 			</ons-carousel>
 	    <ons-list ng-controller="InscriptionContentCtrl" ng-show="inscription_content.length > 0"> 
 			  <ons-list-item ng-repeat="content in inscription_content">
-	        <ons-row align="center">
+	        <ons-row width="100%">
 					 <div ng-switch on = "content.type">
-					  <div ng-switch-when="0"> <ons-col><b> Text </b> </ons-col>
-																	 <ons-col ng-bind-html="text"></ons-col>
+					  <div ng-switch-when="0"> 
+						          <ons-col width="10%"><b> Text </b> </ons-col>
+										  <ons-col ng-bind-html="text"></ons-col>
 						</div>
-					  <div ng-switch-when="1"> <ons-col><b> Translation </b></ons-col>
-																	 <ons-col ng-bind-html="translation"></ons-col>
+					  <div ng-switch-when="1"> 
+						      <ons-col><b> Translation </b></ons-col>
+									<ons-col ng-bind-html="translation"></ons-col>
 						</div>
-					  <div ng-switch-when="2"> <ons-col><b> Commentary </b></ons-col>
-																	 <ons-col ng-bind-html="commentary"></ons-col>
+					  <div ng-switch-when="2">
+						      <ons-col><b> Commentary </b></ons-col>
+								  <ons-col ng-bind-html="commentary"></ons-col>
 						</div>
-					  <div ng-switch-when="3"> <ons-col><b> Bibliography</b> </ons-col>
-																	 <ons-col ng-bind-html="bibliography"></ons-col>
+					  <div ng-switch-when="3">
+						      <ons-col><b> Bibliography</b> </ons-col>
+									<ons-col ng-bind-html="bibliography"></ons-col>
 					 </div>
 				  </ons-row>
 			  </ons-list-item>
