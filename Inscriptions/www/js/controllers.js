@@ -13,6 +13,7 @@ angular.module('inscriptionsApp.controllers', ['ngSanitize', 'inscriptionsApp.se
 })
 .controller('ProjectsTitleCtrl', function($scope) {
 	$scope.project_title = navi.getCurrentPage().options.proj_title;
+	$scope.project_orgs = navi.getCurrentPage().options.proj_orgs;
 })
 .controller('InscriptionsCtrl', function($scope, Inscriptions) {
 	$scope.inscriptions = [];

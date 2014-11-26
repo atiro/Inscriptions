@@ -23,8 +23,8 @@
 	}
     });
 
-    $scope.showProject = function(id, title) {
-      $scope.ons.navigator.pushPage('showProject.html', {proj_id: id, proj_title: title});
+    $scope.showProject = function(id, title, orgs) {
+      $scope.ons.navigator.pushPage('showProject.html', {proj_id: id, proj_title: title, proj_orgs: orgs});
     };
 
     $scope.showInscription = function(id, title) {
