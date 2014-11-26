@@ -38,22 +38,30 @@ angular.module('inscriptionsApp.controllers', ['ngSanitize', 'inscriptionsApp.se
 	InscriptionContent.getById(id).then(function(inscription_content) {
 		$scope.inscription_content = inscription_content;
 	        for(var content in inscription_content) {
-		  if(content.type == 0) {
+		  var inscrip = inscription_content[content];
+		/*
+		  for(var key_c in inscription_content[content]) {
+		     $log.log("Key: " + key_c);
+		     $log.log("Value: " + inscription_content[content][key_c]);
+		}
+		*/
+		  if(inscrip["type"] == 0) {
 			$log.log("Inscription: Text");
-			$scope.text = content.content.replace(/<[^>]+>/gm, '');
-		  } else if(content.type == 1) {
+			$scope.text = inscrip["content"].replace(/<[^>]+>/gm, '');
+		  } else if(inscrip["type"] == 1) {
 			$log.log("Inscription: Translation");
-			$scope.translation = content.content;
-		  } else if(content.type == 2) {
+			$scope.translation = inscrip["content"];
+		  } else if(inscrip["type"] == 2) {
 			$log.log("Inscription: Commentary");
-			$scope.commentary = content.content;
-		  } else if(content.type == 3) {
+			$scope.commentary = inscrip["content"];
+		  } else if(inscript["type"] == 3) {
 			$log.log("Inscription: Bibliography");
-			$scope.bibliography = content.content;
+			$scope.bibliography = inscrip["content"];
 		  } else {
-			$log.log("Inscription Type: " + content.type);
+			$log.log("Inscription Type: " + inscrip["type"]);
+			$log.log("Inscription Content: " + inscrip["content"]);
 		  }
-	}
+		}
 	});
 
 	$log.log("Parsing inscription content for inscription: " + id);

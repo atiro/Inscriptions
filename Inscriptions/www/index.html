@@ -188,8 +188,9 @@
  <ons-template id="showProject.html">
 	 <ons-page on-device-backbutton="navi.popPage()">
 	    <ons-toolbar><div class="center">{{proj_title}}</div></ons-toolbar>
-	    <ons-list ng-controller="InscriptionsCtrl">
-			  <ons-list-item ng-repeat="inscription in inscriptions" ng-click="showInscription(inscription.i_id)">
+			<ons-scroller style="width: 100%; height: 90%;">
+	    <ons-list ng-controller="InscriptionsCtrl" class="page center">
+			  <ons-list-item ng-repeat="inscription in inscriptions" ng-click="showInscription(inscription.i_id)" class="list__item--tappable list__item__line-height" modifier="chevron">
 				  <ons-row>
 					  <ons-col width="120px">
 						   <div class="item-thum"><img src="{{inscription.url}}" fallback-src="img/no_img.gif" loading-src="img/loading_img.gif"></img></div>
@@ -203,13 +204,14 @@
 					</ons-row>
 				</ons-list-item>
 		  </ons-list>
+			</ons-scoller>
 	 </ons-page>
  </ons-template>
 
  <ons-template id="showInscription.html">
 	 <ons-page on-device-backbutton="navi.popPage()">
 			<ons-carousel style="align: center; height: 100px; width: 100%" ng-controller="InscriptionImagesCtrl" ng-show="inscription_images.length > 0">
-			   <ons-carousel-item ng-repeat="image in inscription_images">
+			   <ons-carousel-item ng-repeat="image in inscription_images" style="background-color: gray;">
 						<div class="item-thum">
 						   <img src="{{image.thumb_url}}" fallback-src="img/no_img.gif" loading-src="img/loading_img.gif"/>
 						</div>
@@ -220,7 +222,7 @@
 			</ons-carousel>
 	    <ons-list ng-controller="InscriptionContentCtrl" ng-show="inscription_content.length > 0"> 
 			  <ons-list-item ng-repeat="content in inscription_content">
-	        <ons-row align="center">
+	        <ons-row style="width: 100%">
 					 <div ng-switch on = "content.type">
 					  <div ng-switch-when="0"> <ons-col><b> Text </b> </ons-col>
 																	 <ons-col ng-bind-html="text"></ons-col>
