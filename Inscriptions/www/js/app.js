@@ -16,13 +16,25 @@
       }, 100);
     };
 
-    $scope.showProject = function(id) {
-      $scope.ons.navigator.pushPage('showProject.html', {proj_id: id});
+    $scope.showProject = function(id, title) {
+      $scope.ons.navigator.pushPage('showProject.html', {proj_id: id, proj_title: title});
     };
 
     $scope.showInscription = function(id) {
       $scope.ons.navigator.pushPage('showInscription.html', {inscription_id: id});
     };
+
+    $scope.showImage = function(url) {
+    	var url = url;
+    };
+
+/*
+    $scope.randProject = function() {
+    	// TODO don't hardcode this...
+    	return Math.floor((Math.random() * 5))
+    };
+    */
+
   });
 
 })();

@@ -87,16 +87,16 @@
 		}
 		.splash p.description span {
 			color: white;
-			font: bold 16px/28px Helvetica, Sans-Serif;
+			font: bold 14px/26px Helvetica, Sans-Serif;
 			letter-spacing: 1px;
 			background: rgb(0, 0, 0);
 			background: rgba(0, 0, 0, 0.7);
-			padding: 4px;
+			padding: 10px;
 		}
 		.splash p.credit {
 		  position: absolute;
-			top: 0px;
-			left: -150px;
+			top: 10px;
+			left: 0;
 			width: 100%;
 		}
 		.splash p.credit span {
@@ -123,84 +123,67 @@
   </div>
 
 -->
-  <ons-navigator animation="slide" var="navi">
+  <ons-navigator var="navi">
 
   <ons-page>
-  <ons-carousel fullscreen auto-scroll overscrollable swipable>
+  <ons-carousel fullscreen auto-scroll overscrollable swipable initial-index="2">
 	  <!-- TODO This should be generated, use project id for image url. How
 			   to handle project description spacing ?-->
 	  <ons-carousel-item>
 			<div class="splash">
-			  <img src="img/projects/aphrodisias-1024.jpeg" ng-click="showProject(3)">
+			  <img src="img/projects/aphrodisias-1024.jpeg" ng-click="showProject(3, 'Inscriptions of Aphrodisias')">
 				<h2><span>Inscriptions of Aphrodisias</span></h2>
 				<p class="description"><span>This is the first edition of the online corpus of the Inscriptions of Aphrodisias recorded up to 1994.</span></p>
+				<p class="credit"><span>Photo: Chris Ruggles</span></p>
 		  </div>
 		</ons-carousel-item>
 	  <ons-carousel-item>
 		  <div class="splash">
-			  <img src="img/projects/ogham-1024.jpeg" ng-click="showProject(12)">
+			  <img src="img/projects/ogham-1024.jpeg" ng-click="showProject(12, 'Ogham in 3D')">
 				<h2><span>Ogham in 3D</span></h2>
 				<p class="description"><span>The Ogham in 3D project aims to digitise the approximately 400 Irish ogham inscriptions.</span></p>
+				<p class="credit"><span>Photo: myhelmu</span></p>
 		  </div>
 		</ons-carousel-item>
 	  <ons-carousel-item>
 		  <div class="splash">
-			  <img src="img/projects/vindolanda-1024.jpeg" ng-click="showProject(6)">
+			  <img src="img/projects/vindolanda-1024.jpeg" ng-click="showProject(6, 'Vindolanda Tablets')">
 				<h2><span>Vindolanda Tablets</span></h2>
 				<p class="description"><span>The Vindolanda writing tablets, written in ink on post-card sized sheets of wood, have<span class='spacer'></span><br /><span class="spacer"></span>been excavated at the fort of Vindolanda, immediately south of Hadrian’s Wall in northern England.</span></p>
+				<p class="credit"><span>Photo: Son of Groucho</span></p>
 		  </div>
 		</ons-carousel-item>
 	  <ons-carousel-item>
 		  <div class="splash">
-			  <img src="img/projects/aphrodisias-frieze-1024.jpeg" ng-click="showProject(1)">
+			  <img src="img/projects/aphrodisias-frieze-1024.jpeg" ng-click="showProject(1, 'Aphrodisias in Late Antiquity')">
 				<h2><span>Aphrodisias in Late Antiquity</span></h2>
 				<p class="description"><span>Charlotte Roueché, Aphrodisias in Late Antiquity: The Late Roman and Byzantine Inscriptions.</span></p>
+				<p class="credit"><span>Photo: Damien Entwhistle</span></p>
 			</div>
 		</ons-carousel-item>
 	  <ons-carousel-item>
 		  <div class="splash">
-			  <img src="img/projects/vindolanda2-1024.jpeg" ng-click="showProject(19)">
+			  <img src="img/projects/vindolanda2-1024.jpeg" ng-click="showProject(19, 'Vindolanda Tablets Online II')">
 				<h2><span>Vindolanda Tablets Online II</span></h2>
 				<p class="description"><span>This project is linked in with the Vindolanda Tablets Online(VTO) project from 2003.</span></p>
+				<p class="credit"><span>Photo: Son of Groucho</span></p>
 			</div>
 		</ons-carousel-item>
 	  <ons-carousel-item>
 		  <div class="splash">
-			  <img src="img/projects/roman-britain-1024.jpeg" ng-click="showProject(10)">
+			  <img src="img/projects/roman-britain-1024.jpeg">
 				<h2><span>Curse Tablets of Roman Britain</span></h2>
+				<!--
 				<p class="description"><span>Of the provinces of the former Roman empire, Britain is among the most fertile in curse tablets.<span class='spacer'></span><br /><span class="spacer"></span> At least 250 of the known 500+ Latin tablets have been found in Britain and more continue to be recovered.</span></p>
+				-->
+				<p class="description"><span>Coming Soon!</span></p>
 				<p class="partners"><span>Oxford University</span></p>
-				<p class="credit">Photo: Ian Hex</p>
+				<p class="credit"><span>Photo: Ian Hex</span></p>
 			</div>
 		</ons-carousel-item>
   </ons-carousel>
 	</ons-page>
-
-	<!--
-  </div>
-</div>
--->
-
-	<ons-template id="listProjects.html">
-	  <ons-page>
-      <ons-list ng-controller="ProjectsCtrl">
-        <ons-list-item modifier="chevron" class="item" ng-repeat="project in projects" ng-click="showDetail($index)">
-          <ons-row>
-            <ons-col width="60px"> 
-              <div class="item-thum"></div>
-            </ons-col>
-            <ons-col>
-              <header>
-                <span class="item-title">{{project.name}}</span>
-                <span class="item-label">{{project.abbr}}</span>
-              </header>
-              <p class="item-desc">{{project.description}}</p>
-            </ons-col>
-          </ons-row>                          
-        </ons-list-item>
-      </ons-list>
-    </ons-page>
- </ons-template>
+	</ons-navigator>
 
  <ons-template id="showProject.html">
 	 <ons-page on-device-backbutton="navi.popPage()">
@@ -208,7 +191,7 @@
 			  <ons-list-item ng-repeat="inscription in inscriptions" ng-click="showInscription(inscription.i_id)">
 				  <ons-row>
 					  <ons-col width="120px">
-						   <div class="item-thum"><img src="{{inscription.url}}" fallback-src></img></div>
+						   <div class="item-thum"><img src="{{inscription.url}}" fallback-src="img/no_img.gif" loading-src="img/loading_img.gif"></img></div>
 					  </ons-col>
 						<ons-col>
 						  <header>
@@ -226,26 +209,30 @@
 	 <ons-page on-device-backbutton="navi.popPage()">
 			<ons-carousel style="align: center; height: 100px; width: 100%" ng-controller="InscriptionImagesCtrl" ng-show="inscription_images.length > 0">
 			   <ons-carousel-item ng-repeat="image in inscription_images">
-				 		<img src="{{image.thumb_url}}" fallback-src></img>
+						<div class="item-thum"><img src="{{image.thumb_url}}" fallback-src="img/no_img.gif" loading-src="img/loading_img.gif"/></div>
 				 </ons-carousel-item>
+			   <ons-carousel-item>
+				    <div class="item-thum"><img src="http://insaph.kcl.ac.uk/images/photo/thumb/73_P_04A.jpg"/></div>
+						</ons-carousel-item>
 			</ons-carousel>
-	    <ons-list ng-controller="InscriptionContentCtrl"> 
+	    <ons-list ng-controller="InscriptionContentCtrl" ng-show="inscription_content.length > 0"> 
 			  <ons-list-item ng-repeat="content in inscription_content">
 	        <ons-row align="center">
-					 <div ng-switch on ="content.type">
-					  <div ng-switch-when="0"> <ons-col> Text </ons-col> </div>
-					  <div ng-switch-when="1"> <ons-col> Translation </ons-col> </div>
-					  <div ng-switch-when="2"> <ons-col> Commentary </ons-col> </div>
-					  <div ng-switch-when="3"> <ons-col> Bibliography </ons-col> </div>
+					 <div ng-switch on = "content.type">
+					  <div ng-switch-when="0"> <ons-col><b> Text <b> </ons-col> </div>
+					  <div ng-switch-when="1"> <ons-col><b> Translation <b></ons-col> </div>
+					  <div ng-switch-when="2"> <ons-col><b> Commentary </b></ons-col> </div>
+					  <div ng-switch-when="3"> <ons-col><b> Bibliography</b> </ons-col> </div>
 					 </div>
 						<ons-col> {{content.content}} </ons-col>
 				  </ons-row>
 			  </ons-list-item>
 			</ons-list>
+			<ons-row ng-show="inscription_content.length==0">
+			  <ons-col>No data currently available for this inscription</ons-col>
+		 </ons-row>
 	 </ons-page>
  </ons-template>
-
-</ons-navigator>
 
 </body>  
 </html>

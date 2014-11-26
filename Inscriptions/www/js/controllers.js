@@ -14,10 +14,10 @@ angular.module('inscriptionsApp.controllers', ['ngSanitize', 'inscriptionsApp.se
 .controller('InscriptionsCtrl', function($scope, Inscriptions) {
 	$scope.inscriptions = [];
 
-	var id = navi.getCurrentPage().options.proj_id;
+	var proj_id = navi.getCurrentPage().options.proj_id;
 
 	// Get all the project inscriptions
-	Inscriptions.all(id).then(function(inscriptions) {
+	Inscriptions.all(proj_id).then(function(inscriptions) {
 		$scope.inscriptions = inscriptions;
 	});
 	// Get one project inscription 
@@ -40,6 +40,7 @@ angular.module('inscriptionsApp.controllers', ['ngSanitize', 'inscriptionsApp.se
 	});
 
 	$log.log("Parsing inscription content for inscription: " + id);
+	$log.log("Inscription content length: : " + $scope.inscription_content.length);
 
 	for(var type in $scope.inscription_content) {
 		if(type == 0) {
@@ -64,10 +65,12 @@ angular.module('inscriptionsApp.controllers', ['ngSanitize', 'inscriptionsApp.se
 	//	$scope.inscription = inscription;
 	//});
 })
-.controller('InscriptionImagesCtrl', function($scope, InscriptionImages) {
+.controller('InscriptionImagesCtrl', function($scope, $log, InscriptionImages) {
 	$scope.inscription_images = [];
 
 	var id = navi.getCurrentPage().options.inscription_id;
+
+	$scope.$log = $log;
 
 	// Get all the project inscriptions
 	InscriptionImages.getById(id).then(function(inscription_images) {
