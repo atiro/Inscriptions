@@ -11,11 +11,6 @@
   }, false);
 
   module.controller('AppController', function($scope) {
-    $scope.doSomething = function() {
-      setTimeout(function() {
-        alert('tappaed');
-      }, 100);
-    };
 
     Hammer(window).on("swiperight",function(event) { 
         if (navi.getPages().length > 1) {

@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget android-versionCode="5" id="uk.org.tiro.android.Inscriptions" version="1.3" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+<widget android-versionCode="6" id="uk.org.tiro.android.Inscriptions" version="2.0" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
     <preference name="loglevel" value="DEBUG" />
     <feature name="SQLitePlugin">
         <param name="android-package" value="org.pgsqlite.SQLitePlugin" />
@@ -7,6 +7,8 @@
     <feature name="SplashScreen">
         <param name="android-package" value="org.apache.cordova.splashscreen.SplashScreen" />
     </feature>
+    <icon src="res/android/papyrus-icon.png" />
+    <splash src="www/res/screen/android/inscriptions_splash.9.png" />
     <name>Inscriptions</name>
     <description>
     	Application to view Ancient Inscriptions.
@@ -17,5 +19,7 @@
     <content src="index.html" />
     <access origin="*" />
     <preference name="orientation" value="landscape" />
-    <preference name="SplashScreen" value="" />
+    <preference name="SplashScreen" value="screen" />
+    <preference name="SplashScreenDelay" value="10000" />
+    <preference name="AutoHideSplashScreen" value="false" />
 </widget>

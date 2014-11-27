@@ -26,6 +26,7 @@
 
   <script>
     ons.ready(function() {
+				navigator.splashscreen.hide();
     });
   </script>
 
@@ -209,9 +210,7 @@
  </ons-template>
 
  <ons-template id="showInscription.html">
-	 <ons-page on-device-backbutton="navi.popPage()">
-	    <ons-toolbar ng-controller="InscriptionTitleCtrl" width="100%"><div class="center">{{inscription_title}}</div></ons-toolbar>
-	    <ons-list ng-controller="InscriptionContentCtrl" ng-show="inscription_content.length > 0"> 
+ <!--
 			<ons-carousel height="100%" direction="vertical" overscrollable auto-scroll swipable ng-controller="InscriptionImagesCtrl" ng-show="inscription_images.length > 0">
 			   <ons-carousel-cover><div>Text</div></ons-carousel-cover>
 			   <ons-carousel-item ng-repeat="image in inscription_images" style="background-color: gray;">
@@ -220,12 +219,26 @@
 						</div>
 				 </ons-carousel-item>
 			</ons-carousel>
+				 -->
+	 <ons-page on-device-backbutton="navi.popPage()">
+	    <ons-toolbar ng-controller="InscriptionTitleCtrl" width="100%"><div class="center">{{inscription_title}}</div></ons-toolbar>
+			<ons-scroller style="width: 100%; height: 90%;">
+			<ons-list>
+			    <ons-list-item>
+				  <ons-row ng-controller="InscriptionImagesCtrl">
+					  <ons-col ng-repeat="image in inscription_images">
+						  <div><img src="{{image.thumb_url}}" fallback-src="img/no_img.gif" loading-src="img/loading_img.gif" width="80" height"80">
+							</div>
+						</ons-col>
+					</ons-row>
+					</ons-list-item>
+			</ons-list>
+	    <ons-list ng-controller="InscriptionContentCtrl" ng-show="inscription_content.length > 0"> 
 			  <ons-list-item ng-repeat="content in inscription_content">
-			    </ons-row>
 	        <ons-row width="100%">
 					 <div ng-switch on = "content.type">
 					  <div ng-switch-when="0"> 
-						          <ons-col width="10%"><b> Text </b> </ons-col>
+						          <ons-col><b> Text </b> </ons-col>
 										  <ons-col ng-bind-html="text"></ons-col>
 						</div>
 					  <div ng-switch-when="1"> 
@@ -240,9 +253,11 @@
 						      <ons-col><b> Bibliography</b> </ons-col>
 									<ons-col ng-bind-html="bibliography"></ons-col>
 					 </div>
+					 </div>
 				  </ons-row>
 			  </ons-list-item>
 			</ons-list>
+			</ons-scroller>
 			<ons-row ng-show="inscription_content.length < 1">
 			  <ons-col><p>No data is currently available for this inscription</p></ons-col>
 		 </ons-row>

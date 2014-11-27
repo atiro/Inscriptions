@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget id="uk.org.tiro.android.Inscriptions" version="1.3" xmlns="http://www.w3.org/ns/widgets" android-versionCode="5" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+<widget id="uk.org.tiro.android.Inscriptions" version="2.0" xmlns="http://www.w3.org/ns/widgets" android-versionCode="6" xmlns:cdv="http://cordova.apache.org/ns/1.0">
     <name>Inscriptions</name>
     <description>
     	Application to view Ancient Inscriptions.
@@ -7,11 +7,20 @@
     <author email="inscriptions@tiro.org.uk" href="http://tiro.org.uk/">
     	Richard Palmer
     </author>
-    <content src="index.html" />
+      <content src="index.html" />
+
     <access origin="*" />
     <preference name="orientation" value="landscape"/>
-    <preference name="SplashScreen" value="" />
+
+<platform name="android">
+    <icon src="res/android/papyrus-icon.png"/>
+    <!-- you can use any density that exists in the Android project -->
+    <splash src="www/res/screen/android/inscriptions_splash.9.png"/>
+
+</platform>
+    <preference name="SplashScreen" value="screen" />
+    <preference name="SplashScreenDelay" value="10000" />
+    <preference name="AutoHideSplashScreen" value="false" />
     <!-- 
-    <preference name="SplashScreenDelay" value="3000" />
     -->
 </widget>
