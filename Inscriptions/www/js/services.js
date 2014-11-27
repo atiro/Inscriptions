@@ -61,7 +61,7 @@ angular.module('inscriptionsApp.services', ['inscriptionsApp.config'])
 	var self = this;
 
 	self.all = function(id) {
-		return DB.query('SELECT i.id as i_id, i.title as i_title, i.description as i_description, ip.thumb_url as i_imgurl FROM inscription as i LEFT OUTER JOIN inscription_photo as ip ON i_id = ip.inscription_id where i.project_id = ? group by i_id order by i_id limit 50', [id])
+		return DB.query('SELECT i.id as i_id, i.title as i_title, i.description as i_description, ip.thumb_url as i_imgurl FROM inscription as i LEFT OUTER JOIN inscription_photo as ip ON i_id = ip.inscription_id where i.project_id = ? group by i_id order by i_id limit 75', [id])
 //		return DB.query('SELECT i.id as i_id, i.title as i_title, i.description as i_description FROM inscription as i where i.project_id = ? order by i_id limit 100', [id])
 		.then(function(result){
 			return DB.fetchAll(result);
